@@ -1,17 +1,26 @@
 import { Link } from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import Password from '../components/Password'
+import { useState } from 'react'
 
 const SignUp = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+
   return (
     <>
       <NavBar/>
       <div className="flex justify-center items-center mt-30">
         <div className="w-96 px-7 py-10 bg-white rounded-xl shadow-2xl">
           <form>
-            <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="text" placeholder="Name"></input>
-            <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="email" placeholder="Email"></input>
-            <Password placeholder={"Password"}/>
+            <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name"></input>
+            <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"></input>
+            <Password value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Password"}/>
+
+            {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
+
             <button className="w-full p-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600" type="submit">Create Account</button>
             <p className="text-center mt-4 text-sm font-medium">
               Already have an account?{" "}
