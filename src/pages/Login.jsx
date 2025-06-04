@@ -1,17 +1,12 @@
 import React, { useState } from 'react'
 import NavBar from '../components/NavBar'
 import { Link } from 'react-router-dom'
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
+import Password from '../components/Password'
 
 const Login = () => {
-  const [isShowPassword, setIsShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
-  const toggleShowPassword = () => {
-    setIsShowPassword(!isShowPassword);
-  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,10 +33,7 @@ const Login = () => {
         <div className="w-96 px-7 py-10 bg-white rounded-xl shadow-2xl">
           <form onSubmit={handleLogin}>
             <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
-            <div className="flex items-center justify-between w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none">
-              <input className="flex-3/4 mr-2 outline-none" type={isShowPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Password"}/>
-              {isShowPassword ? <FaRegEye className="text-blue-500 cursor-pointer" size={20} onClick={toggleShowPassword}/> : <FaRegEyeSlash className="text-blue-500 cursor-pointer" size={20} onClick={toggleShowPassword}/>}
-            </div>
+            <Password value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Password"}/>
 
             {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
 
