@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import NavBar from '../components/NavBar'
 import { Link } from 'react-router-dom'
 import Password from '../components/Password'
+import { validateEmail } from '../hooks/validateEmail'
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,11 +20,6 @@ const Login = () => {
       return;
     }
     setError("");
-  }
-
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // regex: ^ = not, \s = whitespace char, @ = at symbol, combined = any char that is not a whitespace or at symbol
-    return regex.test(email);
   }
 
   return (
