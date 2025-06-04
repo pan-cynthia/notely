@@ -19,6 +19,10 @@ const Login = () => {
       setError("Please enter a valid email address.");
       return;
     }
+    if (!password) {
+      setError("Please enter your password.");
+      return;
+    }
     setError("");
   }
 
