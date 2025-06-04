@@ -31,7 +31,7 @@ const Login = () => {
       <NavBar/>
       <div className='flex justify-center items-center mt-30'>
         <div className="w-96 px-7 py-10 bg-white rounded-xl shadow-2xl">
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} noValidate>
             <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
             <Password value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Password"}/>
 
