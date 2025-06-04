@@ -14,12 +14,12 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
-    console.log("entered handle login");
     e.preventDefault();
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
     }
+    setError("");
   }
 
   const validateEmail = (email) => {
