@@ -12,24 +12,40 @@ const Home = () => {
             date="Jun 5, 2025"
             content="My home office has become a cluttered mess, making it difficult to find things."
             tags="#Organization"
+            isPinned={true}
+            pinNote={() => {}}
+            editNote={() => {}}
+            deleteNote={() => {}}
           />
           <NoteCard
             title="Start Learning Guitar"
             date="Jun 5, 2025"
             content="Learning to play the guitar has always been a dream of mine."
             tags="#Guitar"
+            isPinned={false}
+            pinNote={() => {}}
+            editNote={() => {}}
+            deleteNote={() => {}}
           />
           <NoteCard
             title="Try New Recipe"
             date="Jun 5, 2025"
             content="Cooking is one of my favorite hobbies, and I love experimenting in the kitchen."
             tags="#Cooking"
+            isPinned={false}
+            pinNote={() => {}}
+            editNote={() => {}}
+            deleteNote={() => {}}
           />
           <NoteCard
             title="Plan Weekend Getaway"
             date="Jun 5, 2025"
             content="Start planning a weekend getaway trip to Monterey."
             tags="#Travel"
+            isPinned={false}
+            pinNote={() => {}}
+            editNote={() => {}}
+            deleteNote={() => {}}
           />
         </div>
       </div>
