@@ -1,5 +1,6 @@
 import NavBar from '../components/NavBar'
 import NoteCard from '../components/NoteCard'
+import { MdAdd } from 'react-icons/md'
 
 const Home = () => {
   return (
@@ -49,6 +50,9 @@ const Home = () => {
           />
         </div>
       </div>
+      <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {}}>
+        <MdAdd className="text-white" size={25}/>
+      </button>
     </>
   )
 }
