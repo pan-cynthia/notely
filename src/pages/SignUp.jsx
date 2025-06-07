@@ -39,7 +39,7 @@ const SignUp = () => {
 
             {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
 
-            <button className="w-full p-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600" type="submit">Create Account</button>
+            <button className="w-full p-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer" type="submit">Create Account</button>
             <p className="text-center mt-4 text-sm font-medium">
               Already have an account?{" "}
               <Link className="text-blue-500 underline" to="/login">
