@@ -13,7 +13,7 @@ const Home = () => {
   });
 
   const onClose = () => {
-    setAddEditModal({show: false});
+    setAddEditModal({show: false, type: "add", data: null});
   }
 
   return (
@@ -77,7 +77,7 @@ const Home = () => {
         contentLabel="Add/Edit Note"
         className="relative w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
       >
-        <AddEditNote onClose={onClose}/>
+        <AddEditNote noteData={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose}/>
       </Modal>
     </>
   )
