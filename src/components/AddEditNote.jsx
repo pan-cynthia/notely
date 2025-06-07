@@ -1,9 +1,11 @@
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
+import Tags from "./Tags";
 
 const AddEditNote = ({noteData, type, onClose}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [tags, setTags] = useState([]);
   const [error, setError] = useState(null);
 
   const addNote = async () => {}
@@ -44,6 +46,7 @@ const AddEditNote = ({noteData, type, onClose}) => {
       </div>
       <div className="mt-3">
         <label className="text-xs text-slate-900">TAGS</label>
+        <Tags tags={tags} setTags={setTags}/>
       </div>
       {error && <p className="text-sm text-red-500">{error}</p>}
       <button className="w-full p-3 mt-5 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer" onClick={handleNote}>ADD</button>
