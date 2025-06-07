@@ -1,8 +1,21 @@
+import { useState } from 'react'
+import AddEditNote from '../components/AddEditNote'
 import NavBar from '../components/NavBar'
 import NoteCard from '../components/NoteCard'
 import { MdAdd } from 'react-icons/md'
+import Modal from 'react-modal'
 
 const Home = () => {
+  const [openAddEditModal, setAddEditModal] = useState({
+    show: false,
+    type: "add",
+    data: null
+  });
+
+  const onClose = () => {
+    setAddEditModal({show: false});
+  }
+
   return (
     <>
       <NavBar/>
@@ -50,9 +63,22 @@ const Home = () => {
           />
         </div>
       </div>
-      <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {}}>
+      <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {setAddEditModal({show: true, type: "add", data: null})}}>
         <MdAdd className="text-white" size={25}/>
       </button>
+      <Modal
+        isOpen={openAddEditModal.show}
+        onRequestClose={onClose}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+          },
+        }}
+        contentLabel="Add/Edit Note"
+        className="relative w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
+      >
+        <AddEditNote onClose={onClose}/>
+      </Modal>
     </>
   )
 }
