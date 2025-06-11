@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { MdAdd, MdClose } from "react-icons/md";
+import { useState } from 'react';
+import { MdAdd, MdClose } from 'react-icons/md';
 
 const Tags = ({tags, setTags}) => {
   const [inputValue, setInputValue] = useState("");

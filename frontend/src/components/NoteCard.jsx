@@ -1,4 +1,4 @@
-import { MdCreate, MdDelete, MdOutlinePushPin } from "react-icons/md";
+import { MdCreate, MdDelete, MdOutlinePushPin } from 'react-icons/md';
 
 const NoteCard = ({title, date, content, tags, isPinned, pinNote, editNote, deleteNote}) => {
   return (

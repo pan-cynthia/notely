@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { IoMdClose } from "react-icons/io";
-import Tags from "./Tags";
+import { useState } from 'react';
+import { IoMdClose } from 'react-icons/io';
+import Tags from './Tags';
 
 const AddEditNote = ({noteData, type, onClose}) => {
   const [title, setTitle] = useState("");

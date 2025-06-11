@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { getInitials } from "../hooks/useValidate";
+import { useNavigate } from 'react-router-dom';
+import { getInitials } from '../hooks/useValidate';
 
 const Profile = () => {
   const navigate = useNavigate();
