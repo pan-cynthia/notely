@@ -35,7 +35,9 @@ const AddEditNote = ({noteData, type, onClose}) => {
   
   return (
     <>
-      <IoMdClose className="absolute top-5 right-3 mr-2 text-xl text-slate-500 cursor-pointer hover:text-black" onClick={onClose}/>
+      <button className="absolute top-5 right-3 mr-2 text-slate-500 cursor-pointer hover:text-black" onClick={onClose}>
+        <IoMdClose className="text-xl"/>
+      </button>
       <div className="flex flex-col gap-2">
         <label className="text-xs text-slate-900">TITLE</label>
         <input className="text-xl outline-none" type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}></input>
