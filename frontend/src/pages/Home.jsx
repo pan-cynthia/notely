@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import AddEditNote from '../components/AddEditNote'
-import NavBar from '../components/NavBar'
-import NoteCard from '../components/NoteCard'
-import { MdAdd } from 'react-icons/md'
-import Modal from 'react-modal'
+import Modal from 'react-modal';
+import { useState } from 'react';
+import { MdAdd } from 'react-icons/md';
+import AddEditNote from '../components/AddEditNote';
+import NavBar from '../components/NavBar';
+import NoteCard from '../components/NoteCard';
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({
@@ -83,4 +83,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Home;

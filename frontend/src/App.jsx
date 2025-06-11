@@ -1,7 +1,7 @@
-import {Routes, Route} from 'react-router-dom'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 const App = () => {
   return (
@@ -13,4 +13,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;

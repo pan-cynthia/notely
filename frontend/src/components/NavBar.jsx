@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import Profile from '../components/Profile.jsx'
-import SearchBar from '../components/SearchBar.jsx'
+import { useState } from 'react';
+import Profile from '../components/Profile.jsx';
+import SearchBar from '../components/SearchBar.jsx';
 
 const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,4 +29,4 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+export default NavBar;

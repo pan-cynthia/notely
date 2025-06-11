@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import NavBar from '../components/NavBar'
-import { Link } from 'react-router-dom'
-import Password from '../components/Password'
-import { validateEmail } from '../hooks/useValidate'
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { validateEmail } from '../hooks/useValidate';
+import NavBar from '../components/NavBar';
+import Password from '../components/Password';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -47,4 +47,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;

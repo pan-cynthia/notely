@@ -2,7 +2,6 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 
 const SearchBar = ({value, onChange, handleSearch, clearSearch}) => {
-
   return (
     <>
       <div className="flex justify-between items-center w-96 px-4 bg-slate-100 rounded-md">
@@ -14,4 +13,4 @@ const SearchBar = ({value, onChange, handleSearch, clearSearch}) => {
   )
 }
 
-export default SearchBar
+export default SearchBar;

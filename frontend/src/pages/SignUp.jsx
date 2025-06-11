@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
-import NavBar from '../components/NavBar'
-import Password from '../components/Password'
-import { useState } from 'react'
-import { validateEmail } from '../hooks/useValidate'
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { validateEmail } from '../hooks/useValidate';
+import NavBar from '../components/NavBar';
+import Password from '../components/Password';
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -53,4 +53,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignUp;

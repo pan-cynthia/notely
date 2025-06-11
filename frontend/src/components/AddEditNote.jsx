@@ -1,5 +1,5 @@
-import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
+import { IoMdClose } from "react-icons/io";
 import Tags from "./Tags";
 
 const AddEditNote = ({noteData, type, onClose}) => {
@@ -56,4 +56,4 @@ const AddEditNote = ({noteData, type, onClose}) => {
   )
 }
 
-export default AddEditNote
+export default AddEditNote;
