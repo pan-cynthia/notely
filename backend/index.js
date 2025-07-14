@@ -44,7 +44,7 @@ app.post('/create-account', async (req, res) => {
 
   const isUser = await User.findOne({ email: email });
   if (isUser) {
-    return res.json({ error: true, message: "User already exists." });
+    return res.status(400).json({ error: true, message: "User already exists." });
   }
 
   const user = new User ({
@@ -61,8 +61,38 @@ app.post('/create-account', async (req, res) => {
     error: false,
     user,
     accessToken,
-    message: "Registration Successful.",
+    message: "Registration successful.",
   });
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  
+  if (!email) {
+    return res.status(400).json({ error: true, message: "Email is required." });
+  }
+
+  if (!password) {
+    return res.status(400).json({ error: true, message: "Password is required." });
+  }
+
+  const isUser = await User.findOne({ email: email });
+  if (!isUser) {
+    return res.status(400).json({ error: true, message: "User not found." });
+  }
+
+  if (isUser.email === email && isUser.password === password) {
+    const user = { user: isUser };
+    const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "50m" });
+    return res.json({
+      error: false,
+      email,
+      accessToken,
+      message: "Login successful."
+    })
+  } else {
+    return res.status(400).json({ error: true, message: "Invalid credentials." });
+  }
 });
 
 app.listen(3000);
