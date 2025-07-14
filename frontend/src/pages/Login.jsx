@@ -31,7 +31,7 @@ const Login = () => {
             <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
             <Password value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Password"}/>
 
-            {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
+            {error && <p className="text-red-500 text-xs pb-3">{error}</p>}
 
             <button className="w-full p-2 my-1 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer" type="submit">Login</button>
             <p className="text-center mt-4 text-sm font-medium">
