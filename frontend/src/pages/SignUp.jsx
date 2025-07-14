@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { validateEmail } from '../hooks/useValidate';
+import { validateEmail, validatePassword } from '../hooks/useValidate';
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';
 
@@ -22,6 +22,11 @@ const SignUp = () => {
     }
     if (!password) {
       setError("Please enter a password.");
+      return;
+    }
+    const errors = validatePassword(password);
+    if (errors.length > 0) {
+      setError(errors[0]);
       return;
     }
     setError("");
