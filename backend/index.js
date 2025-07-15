@@ -161,7 +161,28 @@ app.put('/edit-note/:noteId', authenticateToken, async (req, res) => {
 app.get('/get-all-notes', authenticateToken, async (req, res) => {
   try {
     const notes = await Note.find({ userId: req.user._id }).sort({ isPinned: -1 });
+
     return res.json({ error: false, notes, message: "Retrived all notes successfully." });
+  } catch (error) {
+    return res.status(500).json({ error: true, message: "Internal server error", details: error.message });
+  }
+});
+
+// delete specified note
+app.delete('/delete-note/:noteId', authenticateToken, async (req, res) => {
+  const { noteId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const note = await Note.findOne({ userId: userId, _id: noteId }); // find note first
+
+    if (!note) {
+      return res.status(404).json({ error: true, message: "Note not found" });
+    }
+
+    await Note.deleteOne({ userId: userId, _id: noteId }); // delete note if found
+
+    return res.json({ error: false, message: "Note deleted successfully." });
   } catch (error) {
     return res.status(500).json({ error: true, message: "Internal server error", details: error.message });
   }
