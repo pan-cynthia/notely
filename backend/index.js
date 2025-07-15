@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import User from './user.js';
+import Note from './note.js';
+import authenticateToken from "./middleware/auth.js";
 
 dotenv.config();
 
@@ -91,6 +93,34 @@ app.post('/login', async (req, res) => {
     })
   } else {
     return res.status(400).json({ error: true, message: "Invalid credentials." });
+  }
+});
+
+app.post('/add-note', authenticateToken, async (req, res) => {
+  const { title, content, tags } = req.body;
+  if (!title) {
+    return res.status(400).json({ error: true, message: "Title is required." });
+  }
+  if (!content) {
+    return res.status(400).json({ error: true, message: "Content is required." });
+  }
+  try {
+    const note = new Note({
+      title,
+      content,
+      tags: tags || [],
+      userId: req.user._id
+    })
+
+    await note.save();
+
+    return res.json({
+      error: false,
+      note,
+      message: "Note created successfully."
+    });
+  } catch (error) {
+    return res.status(500).json({ error: true, message: "Internal server error", details: error.message });
   }
 });
 
