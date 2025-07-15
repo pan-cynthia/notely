@@ -26,7 +26,6 @@ app.get('/', (req, res) => {
   res.send("Hello World!");
 });
 
-
 app.post('/create-account', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -55,7 +54,7 @@ app.post('/create-account', async (req, res) => {
   
   await user.save();
 
-  const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "50m" });
+  const accessToken = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
 
   return res.json({
     error: false,
@@ -67,7 +66,7 @@ app.post('/create-account', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  
+
   if (!email) {
     return res.status(400).json({ error: true, message: "Email is required." });
   }
@@ -82,8 +81,8 @@ app.post('/login', async (req, res) => {
   }
 
   if (isUser.email === email && isUser.password === password) {
-    const user = { user: isUser };
-    const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "50m" });
+    const userPayload = isUser.toObject ? isUser.toObject() : isUser;
+    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
     return res.json({
       error: false,
       email,
