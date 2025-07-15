@@ -124,6 +124,35 @@ app.post('/add-note', authenticateToken, async (req, res) => {
   }
 });
 
+app.put('/edit-note/:noteId', authenticateToken, async (req, res) => {
+  const { noteId } = req.params;
+  const userId = req.user._id;
+  const { title, content, tags, isPinned } = req.body;
+
+  if (!title && !content && !tags && isPinned === undefined) {
+    return res.status(400).json({ error: true, message: "Empty value detected, changes can't be saved." });
+  }
+
+  try {
+    const note = await Note.findOne({ userId: userId, _id: noteId });
+
+    if (!note) {
+      return res.status(404).json({ error: true, message: "Note not found." });
+    }
+
+    if (title) note.title = title;
+    if (content) note.content = content;
+    if (tags) note.tags = tags;
+    if (isPinned !== undefined) note.isPinned = isPinned;
+
+    await note.save();
+
+    return res.json({ error: false, note, message: "Note updated successfully." });
+  } catch (error) {
+    return res.status(500).json({ error: true, message: "Internal server error", details: error.message });
+  }
+});
+
 app.listen(3000);
 
 export default app;
