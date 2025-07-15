@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
   res.send("Hello World!");
 });
 
+// create a new account
 app.post('/create-account', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -56,7 +57,7 @@ app.post('/create-account', async (req, res) => {
   
   await user.save();
 
-  const accessToken = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
+  const accessToken = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: "5hr" });
 
   return res.json({
     error: false,
@@ -66,6 +67,7 @@ app.post('/create-account', async (req, res) => {
   });
 });
 
+// user login with email and password
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -84,7 +86,7 @@ app.post('/login', async (req, res) => {
 
   if (isUser.email === email && isUser.password === password) {
     const userPayload = isUser.toObject ? isUser.toObject() : isUser;
-    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
+    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "5hr" });
     return res.json({
       error: false,
       email,
@@ -96,6 +98,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// create a new note
 app.post('/add-note', authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
   if (!title) {
@@ -124,6 +127,7 @@ app.post('/add-note', authenticateToken, async (req, res) => {
   }
 });
 
+// edit and update specified note
 app.put('/edit-note/:noteId', authenticateToken, async (req, res) => {
   const { noteId } = req.params;
   const userId = req.user._id;
@@ -148,6 +152,16 @@ app.put('/edit-note/:noteId', authenticateToken, async (req, res) => {
     await note.save();
 
     return res.json({ error: false, note, message: "Note updated successfully." });
+  } catch (error) {
+    return res.status(500).json({ error: true, message: "Internal server error", details: error.message });
+  }
+});
+
+// get all notes created by user and sort pinned notes to the top
+app.get('/get-all-notes', authenticateToken, async (req, res) => {
+  try {
+    const notes = await Note.find({ userId: req.user._id }).sort({ isPinned: -1 });
+    return res.json({ error: false, notes, message: "Retrived all notes successfully." });
   } catch (error) {
     return res.status(500).json({ error: true, message: "Internal server error", details: error.message });
   }
