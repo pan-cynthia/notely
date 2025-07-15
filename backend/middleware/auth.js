@@ -9,7 +9,7 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
-      return res.status(403),json({ error: "Forbidden, invalid token." });
+      return res.status(403).json({ error: "Forbidden, invalid token." });
     }
     req.user = user;
     next();
