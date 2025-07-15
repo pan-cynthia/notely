@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
-import User from './user.js';
-import Note from './note.js';
+import User from './models/user.js';
+import Note from './models/note.js';
 import authenticateToken from "./middleware/auth.js";
 
 dotenv.config();
