@@ -18,16 +18,13 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
-
-// app.get('/', (req, res) => {
-//   res.send("Hello World!");
-// });
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
