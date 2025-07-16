@@ -98,6 +98,15 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// get specified user
+app.get('/get-user', authenticateToken, async (req, res) => {
+  const user = await User.findOne({ _id: req.user._id });
+  if (!user) {
+    return res.status(401).json({ error: true, message: "User does not exist." });
+  }
+  return res.json({ error: false, user, message: "Got user successfully." })
+});
+
 // create a new note
 app.post('/add-note', authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
