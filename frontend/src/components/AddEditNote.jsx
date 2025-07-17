@@ -80,7 +80,7 @@ const AddEditNote = ({noteData, type, onClose, getAllNotes}) => {
         <Tags tags={tags} setTags={setTags}/>
       </div>
       {error && <p className="text-sm text-red-500">{error}</p>}
-      <button className="w-full p-3 mt-5 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer" onClick={handleNote}>ADD</button>
+      <button className="w-full p-3 mt-5 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer" onClick={handleNote}>{type === "add" ? 'ADD' : 'UPDATE'}</button>
     </>
   )
 }
