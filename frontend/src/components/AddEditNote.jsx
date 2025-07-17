@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import Tags from './Tags';
+import axiosInstance from '../api/axios';
 
 const AddEditNote = ({noteData, type, onClose}) => {
   const [title, setTitle] = useState("");
@@ -8,7 +9,20 @@ const AddEditNote = ({noteData, type, onClose}) => {
   const [tags, setTags] = useState([]);
   const [error, setError] = useState(null);
 
-  const addNote = async () => {}
+  const addNote = async () => {
+    try {
+      const response = await axiosInstance.post('notes/add-note', {
+        title: title,
+        content: content,
+        tags: tags
+      });
+      console.log(response.data);
+      onClose(); // close modal after adding new note
+    } catch (error) {
+      console.log(error.response);
+      setError(error.response);
+    }
+  }
 
   const editNote = async () => {
     // fill in note data
