@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Profile from '../components/Profile.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 
-const NavBar = () => {
+const NavBar = ({userInfo}) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
@@ -29,7 +29,7 @@ const NavBar = () => {
             <SearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} handleSearch={handleSearch} clearSearch={clearSearch}/>
           </div>
           <div className="flex flex-1/3 justify-end">
-            <Profile/>
+            <Profile userInfo={userInfo}/>
           </div>
         </>
       )}

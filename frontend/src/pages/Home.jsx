@@ -1,9 +1,11 @@
 import Modal from 'react-modal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import AddEditNote from '../components/AddEditNote';
 import NavBar from '../components/NavBar';
 import NoteCard from '../components/NoteCard';
+import axiosInstance from '../api/axios';
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({
@@ -16,9 +18,30 @@ const Home = () => {
     setAddEditModal({show: false, type: "add", data: null});
   }
 
+  const [userInfo, setUserInfo] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axiosInstance.get('/auth/get-user');
+        if (response.data && response.data.user) {
+          setUserInfo(response.data.user);
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) { // user not found, log out
+          localStorage.clear();
+          navigate('/login');
+        }
+      }
+    }
+    fetchUser();
+  }, []);
+
   return (
     <>
-      <NavBar/>
+      <NavBar userInfo={userInfo}/>
       <div className="container mx-auto">
         <div className="grid grid-cols-3 gap-4 mt-10">
           <NoteCard
@@ -75,8 +98,7 @@ const Home = () => {
           },
         }}
         contentLabel="Add/Edit Note"
-        className="relative w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
-      >
+        className="relative w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll">
         <AddEditNote noteData={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose}/>
       </Modal>
     </>
