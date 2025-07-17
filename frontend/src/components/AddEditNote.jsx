@@ -3,7 +3,7 @@ import { IoMdClose } from 'react-icons/io';
 import Tags from './Tags';
 import axiosInstance from '../api/axios';
 
-const AddEditNote = ({noteData, type, onClose}) => {
+const AddEditNote = ({noteData, type, onClose, getAllNotes}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
@@ -17,6 +17,9 @@ const AddEditNote = ({noteData, type, onClose}) => {
         tags: tags
       });
       console.log(response.data);
+      if (getAllNotes) {
+        await getAllNotes(); // re-fetch notes
+      }
       onClose(); // close modal after adding new note
     } catch (error) {
       console.log(error.response);
