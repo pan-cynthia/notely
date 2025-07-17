@@ -23,6 +23,10 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  const handleEdit = (noteData) => {
+    setAddEditModal({show: true, type: 'edit', data: noteData});
+  }
+
   // get logged in user
   const fetchUser = async () => {
     try {
@@ -70,7 +74,7 @@ const Home = () => {
               tags={note.tags}
               isPinned={note.isPinned}
               pinNote={() => {}}
-              editNote={() => {}}
+              editNote={() => handleEdit(note)}
               deleteNote={() => {}}
             />
           ))}

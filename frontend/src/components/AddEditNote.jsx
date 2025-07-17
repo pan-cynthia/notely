@@ -4,9 +4,9 @@ import Tags from './Tags';
 import axiosInstance from '../api/axios';
 
 const AddEditNote = ({noteData, type, onClose, getAllNotes}) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState(noteData?.title || "");
+  const [content, setContent] = useState(noteData?.content || "");
+  const [tags, setTags] = useState(noteData?.tags || []);
   const [error, setError] = useState(null);
 
   const addNote = async () => {
@@ -28,7 +28,19 @@ const AddEditNote = ({noteData, type, onClose, getAllNotes}) => {
   }
 
   const editNote = async () => {
-    // fill in note data
+    try {
+      const response = await axiosInstance.put('notes/edit-note/' + noteData._id, {
+        title,
+        content,
+        tags
+      })
+      console.log(response.data);
+      getAllNotes();
+      onClose();
+    } catch (error) {
+      console.log(error.response);
+      setError(error.response);
+    }
   }
 
   const handleNote = () => {
