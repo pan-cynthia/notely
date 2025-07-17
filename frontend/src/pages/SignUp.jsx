@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword } from '../hooks/useValidate';
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';
+import axiosInstance from '../api/axios';
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -24,14 +27,34 @@ const SignUp = () => {
       setError("Please enter a password.");
       return;
     }
+
     const errors = validatePassword(password);
     if (errors.length > 0) {
       setError(errors[0]);
       return;
     }
     setError("");
-  }
 
+    // create account API call
+    try {
+      const response = await axiosInstance.post('/auth/create-account', {
+        name: name,
+        email: email,
+        password: password
+      })
+      if (response.data && response.data.accessToken) { // successfully created account
+        localStorage.setItem("accessToken", response.data.accessToken);
+        navigate('/');
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
+  }
+  
   return (
     <>
       <NavBar/>
