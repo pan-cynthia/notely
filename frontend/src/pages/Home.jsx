@@ -27,6 +27,17 @@ const Home = () => {
     setAddEditModal({show: true, type: 'edit', data: noteData});
   }
 
+  // handle delete note
+  const deleteNote = async (noteId) => {
+    try {
+      const response = await axiosInstance.delete('/notes/delete-note/' + noteId);
+      console.log(response.data); // deleted note successfully
+      getAllNotes(); // update screen
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   // get logged in user
   const fetchUser = async () => {
     try {
@@ -75,7 +86,7 @@ const Home = () => {
               isPinned={note.isPinned}
               pinNote={() => {}}
               editNote={() => handleEdit(note)}
-              deleteNote={() => {}}
+              deleteNote={() => {deleteNote(note._id)}}
             />
           ))}
         </div>
