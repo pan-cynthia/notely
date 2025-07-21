@@ -6,6 +6,7 @@ import AddEditNote from '../components/AddEditNote';
 import NavBar from '../components/NavBar';
 import NoteCard from '../components/NoteCard';
 import axiosInstance from '../api/axios';
+import { isTokenValid } from '../utils/authentication';
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({
@@ -66,6 +67,15 @@ const Home = () => {
   }
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    // no token or token is expired, need to login again
+    if (!accessToken || !isTokenValid(accessToken)) {
+      localStorage.clear();
+      navigate('/login');
+      return;
+    }
+
     fetchUser();
     getAllNotes();
     return () => {};
