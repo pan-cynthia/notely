@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { validateEmail } from '../hooks/useValidate';
+import { validateEmail } from '../utils/validation.js';
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';
 import axiosInstance from '../api/axios.js';
