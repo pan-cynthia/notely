@@ -34,7 +34,7 @@ app.post('/create-account', async (req, res) => {
   
   await user.save();
 
-  const accessToken = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: "5hr" });
+  const accessToken = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30min" });
 
   return res.json({
     error: false,
@@ -63,7 +63,7 @@ app.post('/login', async (req, res) => {
 
   if (isUser.email === email && isUser.password === password) {
     const userPayload = isUser.toObject ? isUser.toObject() : isUser;
-    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "5hr" });
+    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30min" });
     return res.json({
       error: false,
       email,
