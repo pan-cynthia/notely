@@ -5,6 +5,7 @@ import { MdAdd } from 'react-icons/md';
 import AddEditNote from '../components/AddEditNote';
 import NavBar from '../components/NavBar';
 import NoteCard from '../components/NoteCard';
+import EmptyPage from '../components/EmptyPage';
 import axiosInstance from '../api/axios';
 import { isTokenValid } from '../utils/authentication';
 
@@ -85,7 +86,7 @@ const Home = () => {
     <>
       <NavBar userInfo={userInfo}/>
       <div className="container mx-auto">
-        <div className="grid grid-cols-3 gap-4 mt-10">
+        {allNotes.length > 0 ? (<div className="grid grid-cols-3 gap-4 mt-10">
           {allNotes.map((note, index) => (
             <NoteCard
               key={note._id}
@@ -99,7 +100,7 @@ const Home = () => {
               deleteNote={() => {deleteNote(note._id)}}
             />
           ))}
-        </div>
+        </div>) : (<EmptyPage/>)}
       </div>
       <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {setAddEditModal({show: true, type: "add", data: null})}}>
         <MdAdd className="text-white" size={25}/>
