@@ -8,7 +8,11 @@ const NoteCard = ({title, date, content, tags, isPinned, pinNote, editNote, dele
         <h6 className="text-sm font-medium">{title}</h6>
         <p className="text-xs text-slate-500">{date}</p>
         <p className="text-nowrap">{content?.slice(0, 60)}</p>
-        <div className="text-xs text-slate-500">{tags}</div>
+        <div className="flex flex-wrap gap-1 text-xs text-slate-500">
+          {tags.map((tag, index) => (
+            <span key={index}>#{tag}</span>
+          ))}
+        </div>
       </div>
       <button className="absolute right-8 bottom-3 cursor-pointer" onClick={editNote}><MdCreate className="text-slate-300 hover:text-green-600"/></button>
       <button className="absolute right-3 bottom-3 cursor-pointer" onClick={deleteNote}><MdDelete className="text-slate-300 hover:text-red-500"/></button>
