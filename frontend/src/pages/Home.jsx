@@ -22,6 +22,7 @@ const Home = () => {
 
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
 
   const navigate = useNavigate();
 
@@ -79,6 +80,26 @@ const Home = () => {
     }
   }
 
+  // search for notes containing search query
+  const searchNotes = async (query) => {
+    try {
+      const response = await axiosInstance.get('/notes/search-notes/', {
+        params: { query }
+      });
+      if (response.data && response.data.matchingNotes) {
+        setIsSearch(true);
+        setAllNotes(response.data.matchingNotes);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const clearSearch = () => {
+    setIsSearch(false);
+    getAllNotes();
+  }
+
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -96,7 +117,7 @@ const Home = () => {
 
   return (
     <>
-      <NavBar userInfo={userInfo}/>
+      <NavBar userInfo={userInfo} searchNotes={searchNotes} clearSearch={clearSearch}/>
       <div className="container mx-auto">
         {allNotes.length > 0 ? (<div className="grid grid-cols-3 gap-4 mt-10">
           {allNotes.map((note, index) => (

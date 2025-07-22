@@ -4,16 +4,18 @@ import Profile from '../components/Profile.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 import StickyNoteImg from '../assets/sticky-note.png';
 
-const NavBar = ({userInfo}) => {
+const NavBar = ({userInfo, searchNotes, clearSearch}) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
-    console.log(searchQuery);
-    clearSearch();
+    if (searchQuery) {
+      searchNotes(searchQuery);
+    }
   }
 
-  const clearSearch = () => {
+  const handleClearSearch = () => {
     setSearchQuery("");
+    clearSearch();
   }
 
   const location = useLocation();
@@ -28,7 +30,7 @@ const NavBar = ({userInfo}) => {
       {isHomePage && (
         <>
           <div className="flex flex-1/3 justify-center">
-            <SearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} handleSearch={handleSearch} clearSearch={clearSearch}/>
+            <SearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} handleSearch={handleSearch} handleClearSearch={handleClearSearch}/>
           </div>
           <div className="flex flex-1/3 justify-end">
             <Profile userInfo={userInfo}/>
