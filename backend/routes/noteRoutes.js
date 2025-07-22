@@ -117,4 +117,27 @@ app.put('/pin-unpin-note/:noteId', authenticateToken, async (req, res) => {
   }
 });
 
+// search for notes containing search query
+app.get('/search-notes', authenticateToken, async (req, res) => {
+  const userId = req.user._id;
+  const { query } = req.query;
+  if (!query) {
+    return res.status(400).json({ error: true, message: "Search query is required." });
+  }
+
+  try {
+    const matchingNotes = await Note.find({ 
+      userId: userId,
+      $or: [
+        { title: { $regex: new RegExp(query, "i") } },
+        { content: { $regex: new RegExp(query, "i") } },
+        { tags: { $regex: new RegExp(query, "i") } }
+      ],
+    });
+    return res.json({ error: false, matchingNotes, message: "Successfully retrieved notes matching the search query." });
+  } catch (error) {
+    return res.status(500).json({ error: true, message: "Internal server error", details: error.message });
+  }
+});
+
 export default app;
