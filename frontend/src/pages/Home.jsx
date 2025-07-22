@@ -25,6 +25,18 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  // update pinned state of note
+  const pinNote = async (noteId, isPinned) => {
+    try {
+      const response = await axiosInstance.put('/notes/pin-unpin-note/' + noteId, {
+        isPinned: !isPinned
+      });
+      getAllNotes();
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
   const handleEdit = (noteData) => {
     setAddEditModal({show: true, type: 'edit', data: noteData});
   }
@@ -95,7 +107,7 @@ const Home = () => {
               content={note.content}
               tags={note.tags}
               isPinned={note.isPinned}
-              pinNote={() => {}}
+              pinNote={() => {pinNote(note._id, note.isPinned)}}
               editNote={() => handleEdit(note)}
               deleteNote={() => {deleteNote(note._id)}}
             />
