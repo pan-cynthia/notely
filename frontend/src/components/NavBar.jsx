@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Profile from '../components/Profile.jsx';
 import SearchBar from '../components/SearchBar.jsx';
-import stickyNote from '../assets/sticky-note.png';
+import StickyNoteImg from '../assets/sticky-note.png';
 
 const NavBar = ({userInfo}) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,7 +22,7 @@ const NavBar = ({userInfo}) => {
   return (
     <div className="flex items-center px-6 py-2 bg-white drop-shadow">
       <div className="flex flex-1/3 items-center space-x-2">
-        <img src={stickyNote} width={35}/>
+        <img src={StickyNoteImg} width={35}/>
         <h2 className="text-xl font-medium text-black py-2">Notely</h2>
       </div>
       {isHomePage && (
