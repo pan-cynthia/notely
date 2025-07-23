@@ -1,10 +1,8 @@
-import AddNoteImg from '../assets/add-note.svg';
-
-const EmptyPage = () => {
+const EmptyPage = ({ imgSrc, message }) => {
   return (
-    <div className="h-[75vh] flex flex-col items-center justify-center">
-      <img className="w-60" src={AddNoteImg} alt="No notes"/>
-      <p className="w-3/4 text-sm font-medium text-slate-700 text-center mt-5">Add your first note! Click the '+' button at the bottom right corner to start recording your thoughts, ideas, and reminders.</p>
+    <div className="h-[75vh] flex flex-col items-center justify-center text-center">
+      <img className="w-60 mr-7" src={imgSrc} alt="Image of empty page"/>
+      <p className="text-sm font-medium text-slate-700 mt-5 text-center">{message}</p>
     </div>
   )
 }

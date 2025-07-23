@@ -8,6 +8,8 @@ import NoteCard from '../components/NoteCard';
 import EmptyPage from '../components/EmptyPage';
 import axiosInstance from '../api/axios';
 import { isTokenValid } from '../utils/authentication';
+import AddNoteImg from '../assets/add-note.svg';
+import NoResultsImg from '../assets/no-results.svg';
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({
@@ -133,7 +135,7 @@ const Home = () => {
               deleteNote={() => {deleteNote(note._id)}}
             />
           ))}
-        </div>) : (<EmptyPage/>)}
+        </div>) : (<EmptyPage imgSrc={isSearch ? NoResultsImg : AddNoteImg } message={isSearch ? "Oops! Your search did not match any notes." : "Add your first note! Click the '+' button at the bottom right corner to start recording your thoughts, ideas, and reminders."}/>)}
       </div>
       <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {setAddEditModal({show: true, type: "add", data: null})}}>
         <MdAdd className="text-white" size={25}/>
