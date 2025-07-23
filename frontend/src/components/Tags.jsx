@@ -3,11 +3,18 @@ import { MdAdd, MdClose } from 'react-icons/md';
 
 const Tags = ({tags, setTags}) => {
   const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState("");
 
   const addTag = () => {
-    if (inputValue.trim() !== "") {
-      setTags([...tags, inputValue.trim()]);
+    const trimmed = inputValue.trim();
+    if (trimmed !== "" && !tags.some(tag => tag.toLowerCase() === trimmed.toLowerCase())) {
+      setTags([...tags, trimmed]);
       setInputValue("");
+      setError("");
+    } else if (trimmed === "") {
+      setError(""); // clear input value
+    } else {
+      setError("Tag already exists.");
     }
   };
 
@@ -43,6 +50,7 @@ const Tags = ({tags, setTags}) => {
           <MdAdd className="text-lg text-white"/>
         </button>
       </div>
+      {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
     </>
   )
 }
