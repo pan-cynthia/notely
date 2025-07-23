@@ -7,8 +7,8 @@ const NoteCard = ({title, date, content, tags, isPinned, pinNote, editNote, dele
       <div className="h-full flex flex-col justify-center space-y-2">
         <h6 className="text-sm font-medium">{title}</h6>
         <p className="text-xs text-slate-500">{date}</p>
-        <p className="text-nowrap">{content?.slice(0, 60)}</p>
-        <div className="flex flex-wrap gap-1 text-xs text-slate-500">
+        <p className="text-wrap">{content?.slice(0, 112)}</p>
+        <div className="flex flex-wrap overflow-hidden gap-1 text-xs text-slate-500">
           {tags.map((tag, index) => (
             <span key={index}>#{tag}</span>
           ))}
