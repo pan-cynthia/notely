@@ -5,6 +5,7 @@ import NavBar from '../components/NavBar';
 import NoteCard from '../components/NoteCard';
 import EmptyPage from '../components/EmptyPage';
 import AddEditNoteModal from '../components/AddEditNoteModal';
+import NotePreview from '../components/NotePreview';
 import axiosInstance from '../api/axios';
 import { isTokenValid } from '../utils/authentication';
 import AddNoteImg from '../assets/add-note.svg';
@@ -16,6 +17,20 @@ const Home = () => {
     type: "add",
     data: null
   });
+
+  const [viewNote, setViewNote] = useState({
+    show: false,
+    data: null
+  });
+
+  const handlePreview = (note) => {
+    console.log("entered handle preview");
+    setViewNote({ show: true, data: note });
+  };
+
+  const closePreview = () => {
+    setViewNote({ show: false, data: null });
+  }
 
   const onClose = () => {
     setAddEditModal({show: false, type: "add", data: null});
@@ -132,6 +147,7 @@ const Home = () => {
               pinNote={() => {pinNote(note._id, note.isPinned)}}
               editNote={() => handleEdit(note)}
               deleteNote={() => {deleteNote(note._id)}}
+              onPreview={() => handlePreview(note)}
             />
           ))}
         </div>) : (<EmptyPage imgSrc={isSearch ? NoResultsImg : AddNoteImg } message={isSearch ? "Oops! Your search did not match any notes." : "Add your first note! Click the '+' button at the bottom right corner to start recording your thoughts, ideas, and reminders."}/>)}
@@ -140,6 +156,7 @@ const Home = () => {
         <MdAdd className="text-white" size={25}/>
       </button>
       <AddEditNoteModal isOpen={openAddEditModal.show} noteData={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={getAllNotes}/>
+      {viewNote.show && <NotePreview note={viewNote.data} onClose={closePreview}/>}
     </>
   )
 }
