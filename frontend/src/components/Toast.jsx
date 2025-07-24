@@ -13,7 +13,7 @@ const Toast = ({ isShown, type, message, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className={`absolute top-20 right-6 ${isShown ? "opacity-100" : "opacity-0"}`}>
+    <div className={`absolute top-20 right-6 ${isShown ? "opacity-100" : "opacity-0 -z-5"}`}>
       <div className={`min-w-52 bg-white rounded-md shadow-2xl before:w-[5px] before:h-full before:absolute before:left-0 before:top-0 before:rounded-l-lg ${type === "delete" ? "before:bg-red-500" : "before:bg-green-500"}`}>
         <div className="flex items-center gap-3 px-4 py-2">
           <div className={`w-10 h-10 flex items-center justify-center rounded-full ${type === "delete" ? "bg-red-50" : "bg-green-50"}`}> {/* circle background for check*/}
