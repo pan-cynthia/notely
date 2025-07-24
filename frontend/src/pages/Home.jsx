@@ -6,6 +6,7 @@ import NoteCard from '../components/NoteCard';
 import EmptyPage from '../components/EmptyPage';
 import AddEditNoteModal from '../components/AddEditNoteModal';
 import NotePreview from '../components/NotePreview';
+import Toast from '../components/Toast';
 import axiosInstance from '../api/axios';
 import { isTokenValid } from '../utils/authentication';
 import AddNoteImg from '../assets/add-note.svg';
@@ -22,6 +23,27 @@ const Home = () => {
     show: false,
     data: null
   });
+
+  const [showToastMsg, setShowToastMsg] = useState({
+    show: false,
+    type: "add",
+    message: ""
+  });
+
+   const handleShowToastMsg = (type, message) => {
+    setShowToastMsg({
+      show: true,
+      type: type,
+      message: message
+    });
+  }
+
+  const handleCloseToast = () => {
+    setShowToastMsg({
+      show: false,
+      message: ""
+    })
+  }
 
   const handlePreview = (note) => {
     console.log("entered handle preview");
@@ -63,6 +85,7 @@ const Home = () => {
     try {
       const response = await axiosInstance.delete('/notes/delete-note/' + noteId);
       console.log(response.data); // deleted note successfully
+      handleShowToastMsg("delete", "Note Deleted Successfully");
       getAllNotes(); // update screen
     } catch (error) {
       console.log(error.response);
@@ -155,8 +178,9 @@ const Home = () => {
       <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {setAddEditModal({show: true, type: "add", data: null})}}>
         <MdAdd className="text-white" size={25}/>
       </button>
-      <AddEditNoteModal isOpen={openAddEditModal.show} noteData={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={getAllNotes}/>
+      <AddEditNoteModal isOpen={openAddEditModal.show} noteData={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={getAllNotes} handleShowToastMsg={handleShowToastMsg}/>
       {viewNote.show && <NotePreview note={viewNote.data} onClose={closePreview}/>}
+      <Toast isShown={showToastMsg.show} type={showToastMsg.type} message={showToastMsg.message} onClose={handleCloseToast}/>
     </>
   )
 }

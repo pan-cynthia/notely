@@ -3,7 +3,7 @@ import { IoMdClose } from 'react-icons/io';
 import Tags from './Tags';
 import axiosInstance from '../api/axios';
 
-const AddEditNote = ({noteData, type, onClose, getAllNotes}) => {
+const AddEditNote = ({ noteData, type, onClose, getAllNotes, handleShowToastMsg }) => {
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
   const [tags, setTags] = useState(noteData?.tags || []);
@@ -16,7 +16,8 @@ const AddEditNote = ({noteData, type, onClose, getAllNotes}) => {
         content: content,
         tags: tags
       });
-      console.log(response.data);
+      console.log(response.data.note);
+      handleShowToastMsg(type, "Note Added Successfully");
       if (getAllNotes) {
         await getAllNotes(); // re-fetch notes
       }
@@ -35,6 +36,7 @@ const AddEditNote = ({noteData, type, onClose, getAllNotes}) => {
         tags
       })
       console.log(response.data);
+      handleShowToastMsg(type, "Note Updated Successfully");
       getAllNotes();
       onClose();
     } catch (error) {
