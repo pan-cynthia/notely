@@ -7,6 +7,7 @@ const SearchBar = ({value, onChange, handleSearch, handleClearSearch}) => {
       <div className="flex justify-between items-center w-96 px-4 bg-slate-100 rounded-md">
         <input className="w-full text-xs py-[11px] mr-2 outline-none" type="text" placeholder="Search Notes" value={value} onChange={onChange}/>
         {value && <button className="mr-2 cursor-pointer" onClick={handleClearSearch}><IoMdClose className="text-xl text-slate-500 hover:text-black"/></button>}
+        {value && <span className="mr-2 text-slate-500 font-thin">|</span>}
         <button className="cursor-pointer" onClick={handleSearch}><FaMagnifyingGlass className="text-slate-500 hover:text-black"/></button>
       </div>
     </>
