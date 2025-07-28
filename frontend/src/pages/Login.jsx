@@ -4,7 +4,7 @@ import { validateEmail } from '../utils/validation.js';
 import { isTokenValid } from '../utils/authentication.js';
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';
-import axiosInstance from '../api/axios.js';
+import axiosInstance from '../api/axiosInstance';
 
 const Login = () => {
   const navigate = useNavigate();

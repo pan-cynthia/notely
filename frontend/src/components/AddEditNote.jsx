@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import Tags from './Tags';
-import axiosInstance from '../api/axios';
+import axiosInstance from '../api/axiosInstance';
 
 const AddEditNote = ({ noteData, type, onClose, getAllNotes, handleShowToastMsg }) => {
   const [title, setTitle] = useState(noteData?.title || "");

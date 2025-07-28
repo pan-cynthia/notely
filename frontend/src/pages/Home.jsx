@@ -7,7 +7,7 @@ import EmptyPage from '../components/EmptyPage';
 import AddEditNoteModal from '../components/AddEditNoteModal';
 import NotePreview from '../components/NotePreview';
 import Toast from '../components/Toast';
-import axiosInstance from '../api/axios';
+import axiosInstance from '../api/axiosInstance';
 import { isTokenValid } from '../utils/authentication';
 import AddNoteImg from '../assets/add-note.svg';
 import NoResultsImg from '../assets/no-results.svg';
