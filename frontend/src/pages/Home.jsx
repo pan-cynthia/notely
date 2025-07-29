@@ -24,14 +24,14 @@ const Home = () => {
     data: null
   });
 
-  const [showToastMsg, setShowToastMsg] = useState({
+  const [showToast, setShowToast] = useState({
     show: false,
     type: "add",
     message: ""
   });
 
-   const handleShowToastMsg = (type, message) => {
-    setShowToastMsg({
+   const handleShowToast = (type, message) => {
+    setShowToast({
       show: true,
       type: type,
       message: message
@@ -39,7 +39,7 @@ const Home = () => {
   }
 
   const handleCloseToast = () => {
-    setShowToastMsg({
+    setShowToast({
       show: false,
       message: ""
     })
@@ -76,8 +76,8 @@ const Home = () => {
     }
   }
 
-  const handleEdit = (noteData) => {
-    setAddEditModal({show: true, type: 'edit', data: noteData});
+  const handleEdit = (note) => {
+    setAddEditModal({show: true, type: 'edit', data: note});
   }
 
   // handle delete note
@@ -85,7 +85,7 @@ const Home = () => {
     try {
       const response = await axiosInstance.delete('/notes/delete-note/' + noteId);
       console.log(response.data); // deleted note successfully
-      handleShowToastMsg("delete", "Note Deleted Successfully");
+      handleShowToast("delete", "Note Deleted Successfully");
       getAllNotes(); // update screen
     } catch (error) {
       console.log(error.response);
@@ -178,9 +178,9 @@ const Home = () => {
       <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {setAddEditModal({show: true, type: "add", data: null})}}>
         <MdAdd className="text-white" size={25}/>
       </button>
-      <AddEditNoteModal isOpen={openAddEditModal.show} noteData={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={getAllNotes} handleShowToastMsg={handleShowToastMsg}/>
+      <AddEditNoteModal isOpen={openAddEditModal.show} note={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={getAllNotes} handleShowToast={handleShowToast}/>
       {viewNote.show && <NotePreview note={viewNote.data} onClose={closePreview}/>}
-      <Toast isShown={showToastMsg.show} type={showToastMsg.type} message={showToastMsg.message} onClose={handleCloseToast}/>
+      <Toast isShown={showToast.show} type={showToast.type} message={showToast.message} onClose={handleCloseToast}/>
     </>
   )
 }

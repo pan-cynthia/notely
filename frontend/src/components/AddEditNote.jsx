@@ -3,10 +3,10 @@ import { IoMdClose } from 'react-icons/io';
 import Tags from './Tags';
 import axiosInstance from '../api/axiosInstance';
 
-const AddEditNote = ({ noteData, type, onClose, getAllNotes, handleShowToastMsg }) => {
-  const [title, setTitle] = useState(noteData?.title || "");
-  const [content, setContent] = useState(noteData?.content || "");
-  const [tags, setTags] = useState(noteData?.tags || []);
+const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
+  const [title, setTitle] = useState(note?.title || "");
+  const [content, setContent] = useState(note?.content || "");
+  const [tags, setTags] = useState(note?.tags || []);
   const [error, setError] = useState(null);
 
   const addNote = async () => {
@@ -17,7 +17,7 @@ const AddEditNote = ({ noteData, type, onClose, getAllNotes, handleShowToastMsg 
         tags: tags
       });
       console.log(response.data.note);
-      handleShowToastMsg(type, "Note Added Successfully");
+      handleShowToast(type, "Note Added Successfully");
       if (getAllNotes) {
         await getAllNotes(); // re-fetch notes
       }
@@ -30,13 +30,13 @@ const AddEditNote = ({ noteData, type, onClose, getAllNotes, handleShowToastMsg 
 
   const editNote = async () => {
     try {
-      const response = await axiosInstance.put('notes/edit-note/' + noteData._id, {
+      const response = await axiosInstance.put('notes/edit-note/' + note._id, {
         title,
         content,
         tags
       })
       console.log(response.data);
-      handleShowToastMsg(type, "Note Updated Successfully");
+      handleShowToast(type, "Note Updated Successfully");
       getAllNotes();
       onClose();
     } catch (error) {

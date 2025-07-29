@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import AddEditNote from "./AddEditNote";
 
-const AddEditModal = ({ isOpen, noteData, type, onClose, getAllNotes, handleShowToastMsg }) => {
+const AddEditModal = ({ isOpen, note, type, onClose, getAllNotes, handleShowToast }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -13,7 +13,7 @@ const AddEditModal = ({ isOpen, noteData, type, onClose, getAllNotes, handleShow
       }}
       contentLabel="Add or Edit Note"
       className="relative w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-24 p-5 overflow-scroll">
-      <AddEditNote noteData={noteData} type={type} onClose={onClose} getAllNotes={getAllNotes} handleShowToastMsg={handleShowToastMsg}/>
+      <AddEditNote note={note} type={type} onClose={onClose} getAllNotes={getAllNotes} handleShowToast={handleShowToast}/>
     </Modal>
   )
 }
