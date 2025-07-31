@@ -11,6 +11,7 @@ import axiosInstance from '../api/axiosInstance';
 import { isTokenValid } from '../utils/authentication';
 import AddNoteImg from '../assets/add-note.svg';
 import NoResultsImg from '../assets/no-results.svg';
+import { handleError } from '../utils/handleError';
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({
@@ -72,7 +73,7 @@ const Home = () => {
       });
       getAllNotes();
     } catch (error) {
-      console.log(error.response);
+      handleError(error);
     }
   }
 
@@ -88,7 +89,7 @@ const Home = () => {
       handleShowToast("delete", "Note Deleted Successfully");
       getAllNotes(); // update screen
     } catch (error) {
-      console.log(error.response);
+      handleError(error);
     }
   }
 
@@ -101,8 +102,7 @@ const Home = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 401) { // user not found, log out
-        localStorage.clear();
-        navigate('/login');
+        handleError(error, navigate);
       }
     }
   }
@@ -115,7 +115,7 @@ const Home = () => {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
-      console.log("Something went wrong. Please try again.");
+      handleError(error);
     }
   }
 
@@ -130,7 +130,7 @@ const Home = () => {
         setAllNotes(response.data.matchingNotes);
       }
     } catch (error) {
-      console.log(error);
+      handleError(error);
     }
   }
 

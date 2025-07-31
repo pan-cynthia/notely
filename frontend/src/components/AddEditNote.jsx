@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import Tags from './Tags';
 import axiosInstance from '../api/axiosInstance';
+import { handleError } from '../utils/handleError';
 
 const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
   const [title, setTitle] = useState(note?.title || "");
@@ -23,8 +24,7 @@ const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
       }
       onClose(); // close modal after adding new note
     } catch (error) {
-      console.log(error.response);
-      setError(error.response);
+      handleError(error);
     }
   }
 
@@ -40,8 +40,7 @@ const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
       getAllNotes();
       onClose();
     } catch (error) {
-      console.log(error.response);
-      setError(error.response);
+      handleError(error);
     }
   }
 
