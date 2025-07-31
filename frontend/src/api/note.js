@@ -8,11 +8,11 @@ export const addNote = (note) => {
   });
 };
 
-export const editNote = (note) => {
-  return axiosInstance.put(`/note/edit-note${note._id}`, {
-    title: note.title,
-    content: note.content,
-    tags: note.tags,
+export const editNote = (noteId, title, content, tags) => {
+  return axiosInstance.put(`/notes/edit-note/${noteId}`, {
+    title,
+    content,
+    tags,
   });
 };
 
