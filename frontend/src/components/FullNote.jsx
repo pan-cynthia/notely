@@ -34,7 +34,7 @@ const FullNote = ({ note, onClose }) => {
             <IoMdClose className="text-xl"/>
           </button>
           <h2 className="mb-4 text-xl font-semibold">{note.title}</h2>
-          <p className="mb-4 text-xs text-slate-500">{new Date(note.createdOn).toLocaleDateString()}</p>
+          <p className="mb-4 text-xs text-slate-500">{new Date(note.createdOn).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'})}</p>
           <p className="flex-1 overflow-y-auto text-sm">{note.content}</p>
           <div className="mt-4 flex flex-wrap gap-2 text-slate-600 text-xs">
             {note.tags.map((tag, index) => (
