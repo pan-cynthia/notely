@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { validateEmail } from '../utils/validation.js';
+import { validateEmail } from '../utils/stringUtils';
 import { isTokenValid } from '../utils/authentication.js';
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';

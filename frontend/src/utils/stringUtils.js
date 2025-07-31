@@ -14,7 +14,7 @@ export const validatePassword = (password) => {
   return errors;
 }
 
-export const getInitials = (name) => {
+export const getUserInitials = (name) => {
   if (!name) return "";
   const words = name.split(" ");
   let initials = "";
