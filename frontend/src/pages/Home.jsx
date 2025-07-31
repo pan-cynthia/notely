@@ -42,20 +42,23 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  const onClose = () => {
+  const handleShowModal = () => {
+    setAddEditModal({ show: true, type: "add", data: null });
+  }
+
+  const handleCloseModal = () => {
     setAddEditModal({ show: false, type: "add", data: null });
   };
 
-  const handleEdit = (note) => {
+  const handleEditNote = (note) => {
     setAddEditModal({ show: true, type: "edit", data: note });
   };
 
-  const handlePreview = (note) => {
-    console.log("entered handle preview");
+  const handleViewNote = (note) => {
     setViewNote({ show: true, data: note });
   };
 
-  const closePreview = () => {
+  const handleCloseViewNote = () => {
     setViewNote({ show: false, data: null });
   };
 
@@ -181,11 +184,11 @@ const Home = () => {
                 pinNote={() => {
                   handlePinNote(note._id, note.isPinned);
                 }}
-                editNote={() => handleEdit(note)}
+                editNote={() => handleEditNote(note)}
                 deleteNote={() => {
                   handleDeleteNote(note._id);
                 }}
-                onPreview={() => handlePreview(note)}
+                onPreview={() => handleViewNote(note)}
               />
             ))}
           </div>
@@ -202,9 +205,7 @@ const Home = () => {
       </div>
       <button
         className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10"
-        onClick={() => {
-          setAddEditModal({ show: true, type: "add", data: null });
-        }}
+        onClick={() => handleShowModal()}
       >
         <MdAdd className="text-white" size={25} />
       </button>
@@ -212,12 +213,12 @@ const Home = () => {
         isOpen={openAddEditModal.show}
         note={openAddEditModal.data}
         type={openAddEditModal.type}
-        onClose={onClose}
+        onClose={handleCloseModal}
         getAllNotes={handleGetAllNotes}
         handleShowToast={handleShowToast}
       />
       {viewNote.show && (
-        <FullNote note={viewNote.data} onClose={closePreview} />
+        <FullNote note={viewNote.data} onClose={handleCloseViewNote} />
       )}
       <Toast
         isShown={showToast.show}
