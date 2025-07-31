@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+
 const { Schema } = mongoose;
 
 const noteSchema = new Schema({
@@ -7,7 +8,7 @@ const noteSchema = new Schema({
   tags: { type: [String], default: [] },
   isPinned: { type: Boolean, default: false },
   userId: { type: String, required: true },
-  createdOn: { type: Date, default: new Date().getTime() }
+  createdOn: { type: Date, default: new Date().getTime() },
 });
 
 export default mongoose.model("Note", noteSchema);

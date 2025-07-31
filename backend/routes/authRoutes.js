@@ -1,12 +1,14 @@
-import express from 'express';
-import jwt from 'jsonwebtoken';
-import authenticateToken from '../middleware/auth.js';
-import User from '../models/user.js';
+import express from "express";
+import jwt from "jsonwebtoken";
+
+import authenticateToken from "../middleware/auth.js";
+
+import User from "../models/user.js";
 
 const app = express.Router();
 
 // create a new account
-app.post('/create-account', async (req, res) => {
+app.post("/create-account", async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name) {
@@ -18,23 +20,31 @@ app.post('/create-account', async (req, res) => {
   }
 
   if (!password) {
-    return res.status(400).json({ error: true, message: "Password is required." });
+    return res
+      .status(400)
+      .json({ error: true, message: "Password is required." });
   }
 
   const isUser = await User.findOne({ email: email });
   if (isUser) {
-    return res.status(400).json({ error: true, message: "User already exists." });
+    return res
+      .status(400)
+      .json({ error: true, message: "User already exists." });
   }
 
-  const user = new User ({
+  const user = new User({
     name,
     email,
-    password
+    password,
   });
-  
+
   await user.save();
 
-  const accessToken = jwt.sign(user.toObject(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30min" });
+  const accessToken = jwt.sign(
+    user.toObject(),
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "30min" }
+  );
 
   return res.json({
     error: false,
@@ -44,8 +54,8 @@ app.post('/create-account', async (req, res) => {
   });
 });
 
-// user login with email and password
-app.post('/login', async (req, res) => {
+// login with email and password
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email) {
@@ -53,7 +63,9 @@ app.post('/login', async (req, res) => {
   }
 
   if (!password) {
-    return res.status(400).json({ error: true, message: "Password is required." });
+    return res
+      .status(400)
+      .json({ error: true, message: "Password is required." });
   }
 
   const isUser = await User.findOne({ email: email });
@@ -63,25 +75,31 @@ app.post('/login', async (req, res) => {
 
   if (isUser.email === email && isUser.password === password) {
     const userPayload = isUser.toObject ? isUser.toObject() : isUser;
-    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30min" });
+    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "30min",
+    });
     return res.json({
       error: false,
       email,
       accessToken,
-      message: "Login successful."
-    })
+      message: "Login successful.",
+    });
   } else {
-    return res.status(400).json({ error: true, message: "Invalid credentials." });
+    return res
+      .status(400)
+      .json({ error: true, message: "Invalid credentials." });
   }
 });
 
-// get specified user
-app.get('/get-user', authenticateToken, async (req, res) => {
+// get user by id
+app.get("/get-user", authenticateToken, async (req, res) => {
   const user = await User.findOne({ _id: req.user._id });
   if (!user) {
-    return res.status(401).json({ error: true, message: "User does not exist." });
+    return res
+      .status(401)
+      .json({ error: true, message: "User does not exist." });
   }
-  return res.json({ error: false, user, message: "Got user successfully." })
+  return res.json({ error: false, user, message: "Got user successfully." });
 });
 
 export default app;

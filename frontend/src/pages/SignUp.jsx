@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { createAccount } from '../api/auth';
+import { createAccount } from "../api/auth";
 
-import { validateEmail, validatePassword } from '../utils/stringUtils';
+import { validateEmail, validatePassword } from "../utils/stringUtils";
 
-import NavBar from '../components/NavBar';
-import Password from '../components/Password';
+import NavBar from "../components/NavBar";
+import Password from "../components/Password";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -18,6 +18,7 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
     if (!name) {
       setError("Please enter your name.");
       return;
@@ -40,10 +41,10 @@ const SignUp = () => {
 
     // create new account with user entered form data
     try {
-     const response = await createAccount({ name, email, password });
-      if (response.data?.accessToken) { // successfully created account
+      const response = await createAccount({ name, email, password });
+      if (response.data?.accessToken) {
         localStorage.setItem("accessToken", response.data.accessToken);
-        navigate('/');
+        navigate("/");
       }
     } catch (error) {
       if (error.response?.data?.message) {
@@ -52,21 +53,42 @@ const SignUp = () => {
         setError("Something went wrong. Please try again.");
       }
     }
-  }
-  
+  };
+
   return (
     <>
-      <NavBar/>
+      <NavBar />
       <div className="flex justify-center items-center mt-30">
         <div className="w-96 px-7 py-10 bg-white rounded-xl shadow-2xl">
           <form onSubmit={handleSignUp} noValidate>
-            <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name"></input>
-            <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"></input>
-            <Password value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Password"}/>
+            <input
+              className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
+            ></input>
+            <input
+              className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            ></input>
+            <Password
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={"Password"}
+            />
 
             {error && <p className="text-red-500 text-xs pb-3">{error}</p>}
 
-            <button className="w-full p-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer" type="submit">Create Account</button>
+            <button
+              className="w-full p-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer"
+              type="submit"
+            >
+              Create Account
+            </button>
             <p className="text-center mt-4 text-sm font-medium">
               Already have an account?{" "}
               <Link className="text-blue-500 underline" to="/login">
@@ -77,7 +99,7 @@ const SignUp = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default SignUp;

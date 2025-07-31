@@ -1,30 +1,31 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { login } from '../api/auth';
+import { login } from "../api/auth";
 
-import { isTokenValid } from '../utils/authentication';
-import { validateEmail } from '../utils/stringUtils';
+import { isTokenValid } from "../utils/authentication";
+import { validateEmail } from "../utils/stringUtils";
 
-import NavBar from '../components/NavBar';
-import Password from '../components/Password';
+import NavBar from "../components/NavBar";
+import Password from "../components/Password";
 
 const Login = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken && isTokenValid(accessToken)) {
-      navigate('/');
-    }
-  }, [navigate]);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken && isTokenValid(accessToken)) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
@@ -35,13 +36,12 @@ const Login = () => {
     }
     setError("");
 
-    // login API call
     try {
       const response = await login({ email, password });
-      // successfully logged in
       if (response.data?.accessToken) {
+        // successful login
         localStorage.setItem("accessToken", response.data.accessToken);
-        navigate('/'); // navigate to home page
+        navigate("/");
       }
     } catch (error) {
       if (error.response?.data?.message) {
@@ -50,20 +50,35 @@ const Login = () => {
         setError("Something went wrong. Please try again.");
       }
     }
-  }
+  };
 
   return (
     <>
-      <NavBar/>
-      <div className='flex justify-center items-center mt-30'>
+      <NavBar />
+      <div className="flex justify-center items-center mt-30">
         <div className="w-96 px-7 py-10 bg-white rounded-xl shadow-2xl">
           <form onSubmit={handleLogin} noValidate>
-            <input className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
-            <Password value={password} onChange={(e) => setPassword(e.target.value)} placeholder={"Password"}/>
+            <input
+              className="w-full px-5 py-3 mb-4 text-sm rounded shadow outline-none"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            />
+            <Password
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={"Password"}
+            />
 
             {error && <p className="text-red-500 text-xs pb-3">{error}</p>}
 
-            <button className="w-full p-2 my-1 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer" type="submit">Login</button>
+            <button
+              className="w-full p-2 my-1 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-600 cursor-pointer"
+              type="submit"
+            >
+              Login
+            </button>
             <p className="text-center mt-4 text-sm font-medium">
               Not registered yet?{" "}
               <Link className="text-blue-500 underline" to="/signup">
@@ -74,7 +89,7 @@ const Login = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Login;
