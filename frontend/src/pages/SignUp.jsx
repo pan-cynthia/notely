@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword } from '../utils/stringUtils';
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';
-import axiosInstance from '../api/axiosInstance';
+import { createAccount } from '../api/auth';
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -35,13 +35,9 @@ const SignUp = () => {
     }
     setError("");
 
-    // create account API call
+    // create new account with user entered form data
     try {
-      const response = await axiosInstance.post('/auth/create-account', {
-        name: name,
-        email: email,
-        password: password
-      })
+     const response = await createAccount({ name, email, password });
       if (response.data?.accessToken) { // successfully created account
         localStorage.setItem("accessToken", response.data.accessToken);
         navigate('/');

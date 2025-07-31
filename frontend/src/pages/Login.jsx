@@ -4,7 +4,7 @@ import { validateEmail } from '../utils/stringUtils';
 import { isTokenValid } from '../utils/authentication.js';
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';
-import axiosInstance from '../api/axiosInstance';
+import { login } from '../api/auth';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Login = () => {
     if (accessToken && isTokenValid(accessToken)) {
       navigate('/');
     }
-  }, []);
+  }, [navigate]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,10 +34,7 @@ const Login = () => {
 
     // login API call
     try {
-      const response = await axiosInstance.post('/auth/login', {
-        email: email,
-        password: password
-      });
+      const response = await login({ email, password });
       // successfully logged in
       if (response.data?.accessToken) {
         localStorage.setItem("accessToken", response.data.accessToken);

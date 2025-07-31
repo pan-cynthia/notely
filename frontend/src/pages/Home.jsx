@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import NavBar from '../components/NavBar';
@@ -7,11 +7,12 @@ import EmptyPage from '../components/EmptyPage';
 import AddEditNoteModal from '../components/AddEditNoteModal';
 import FullNote from '../components/FullNote';
 import Toast from '../components/Toast';
-import axiosInstance from '../api/axiosInstance';
 import { isTokenValid } from '../utils/authentication';
 import AddNoteImg from '../assets/add-note.svg';
 import NoResultsImg from '../assets/no-results.svg';
 import { handleError } from '../utils/handleError';
+import { pinNote, deleteNote, getAllNotes, searchNotes } from "../api/note";
+import { getUser } from "../api/auth";
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({
@@ -66,14 +67,12 @@ const Home = () => {
   const navigate = useNavigate();
 
   // update pinned state of note
-  const pinNote = async (noteId, isPinned) => {
+  const handlePinNote = async (noteId, isPinned) => {
     try {
-      const response = await axiosInstance.put('/notes/pin-unpin-note/' + noteId, {
-        isPinned: !isPinned
-      });
-      getAllNotes();
+      await pinNote(noteId, isPinned);
+      await handleGetAllNotes();
     } catch (error) {
-      handleError(error);
+      console.log(error.response);
     }
   }
 
@@ -81,50 +80,45 @@ const Home = () => {
     setAddEditModal({show: true, type: 'edit', data: note});
   }
 
-  // handle delete note
-  const deleteNote = async (noteId) => {
+  // delete selected note
+  const handleDeleteNote = async (noteId) => {
     try {
-      const response = await axiosInstance.delete('/notes/delete-note/' + noteId);
-      console.log(response.data); // deleted note successfully
+      await deleteNote(noteId);
       handleShowToast("delete", "Note Deleted Successfully");
-      getAllNotes(); // update screen
+      await handleGetAllNotes();
     } catch (error) {
-      handleError(error);
+      console.log(error.response);
     }
   }
 
   // get logged in user
-  const fetchUser = async () => {
+  const handleGetUser = useCallback(async () => {
     try {
-      const response = await axiosInstance.get('/auth/get-user');
+      const response = await getUser();
       if (response.data && response.data.user) {
         setUserInfo(response.data.user);
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) { // user not found, log out
-        handleError(error, navigate);
-      }
+      handleError(error, navigate);
     }
-  }
+  }, [navigate]);
 
   // get all of user's notes
-  const getAllNotes = async () => {
+  const handleGetAllNotes = useCallback(async () => {
     try {
-      const response = await axiosInstance.get('/notes/get-all-notes');
+      const response = await getAllNotes();
       if (response.data && response.data.notes) {
         setAllNotes(response.data.notes);
       }
     } catch (error) {
       handleError(error);
     }
-  }
+  }, []);
 
   // search for notes containing search query
-  const searchNotes = async (query) => {
+  const handleSearchNotes = async (query) => {
     try {
-      const response = await axiosInstance.get('/notes/search-notes/', {
-        params: { query }
-      });
+      const response = await searchNotes(query);
       if (response.data && response.data.matchingNotes) {
         setIsSearch(true);
         setAllNotes(response.data.matchingNotes);
@@ -134,32 +128,36 @@ const Home = () => {
     }
   }
 
-  const clearSearch = () => {
+  const clearSearch = async () => {
     setIsSearch(false);
-    getAllNotes();
+    await handleGetAllNotes();
   }
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem("accessToken");
 
     // no token or token is expired, need to login again
     if (!accessToken || !isTokenValid(accessToken)) {
       localStorage.clear();
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
-    fetchUser();
-    getAllNotes();
+    const fetchData = async () => {
+      await handleGetUser();
+      await handleGetAllNotes();
+    };
+
+    fetchData();
     return () => {};
-  }, []);
+  }, [navigate, handleGetUser, handleGetAllNotes]);
 
   return (
     <>
-      <NavBar userInfo={userInfo} searchNotes={searchNotes} clearSearch={clearSearch}/>
+      <NavBar userInfo={userInfo} searchNotes={handleSearchNotes} clearSearch={clearSearch}/>
       <div className="container mx-auto">
         {allNotes.length > 0 ? (<div className="grid grid-cols-3 gap-4 mt-10">
-          {allNotes.map((note, index) => (
+          {allNotes.map((note) => (
             <NoteCard
               key={note._id}
               title={note.title}
@@ -167,9 +165,9 @@ const Home = () => {
               content={note.content}
               tags={note.tags}
               isPinned={note.isPinned}
-              pinNote={() => {pinNote(note._id, note.isPinned)}}
+              pinNote={() => {handlePinNote(note._id, note.isPinned)}}
               editNote={() => handleEdit(note)}
-              deleteNote={() => {deleteNote(note._id)}}
+              deleteNote={() => {handleDeleteNote(note._id)}}
               onPreview={() => handlePreview(note)}
             />
           ))}
@@ -178,7 +176,7 @@ const Home = () => {
       <button className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {setAddEditModal({show: true, type: "add", data: null})}}>
         <MdAdd className="text-white" size={25}/>
       </button>
-      <AddEditNoteModal isOpen={openAddEditModal.show} note={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={getAllNotes} handleShowToast={handleShowToast}/>
+      <AddEditNoteModal isOpen={openAddEditModal.show} note={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={handleGetAllNotes} handleShowToast={handleShowToast}/>
       {viewNote.show && <FullNote note={viewNote.data} onClose={closePreview}/>}
       <Toast isShown={showToast.show} type={showToast.type} message={showToast.message} onClose={handleCloseToast}/>
     </>

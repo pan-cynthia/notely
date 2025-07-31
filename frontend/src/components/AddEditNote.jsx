@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import Tags from './Tags';
-import axiosInstance from '../api/axiosInstance';
 import { handleError } from '../utils/handleError';
+import { addNote, editNote } from '../api/note';
 
 const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
   const [title, setTitle] = useState(note?.title || "");
@@ -10,39 +10,27 @@ const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
   const [tags, setTags] = useState(note?.tags || []);
   const [error, setError] = useState(null);
 
-  const addNote = async () => {
+  const handleAddNote = async () => {
     try {
-      const response = await axiosInstance.post('notes/add-note', {
-        title: title,
-        content: content,
-        tags: tags
-      });
-      console.log(response.data.note);
+      await addNote({ title, content, tags });
       handleShowToast(type, "Note Added Successfully");
-      if (getAllNotes) {
-        await getAllNotes(); // re-fetch notes
-      }
-      onClose(); // close modal after adding new note
-    } catch (error) {
-      handleError(error);
-    }
-  }
-
-  const editNote = async () => {
-    try {
-      const response = await axiosInstance.put('notes/edit-note/' + note._id, {
-        title,
-        content,
-        tags
-      })
-      console.log(response.data);
-      handleShowToast(type, "Note Updated Successfully");
-      getAllNotes();
+      await getAllNotes();
       onClose();
     } catch (error) {
       handleError(error);
     }
-  }
+  };
+
+  const handleEditNote = async () => {
+    try {
+      await editNote(note._id, title, content, tags);
+      handleShowToast(type, "Note Updated Successfully");
+      await getAllNotes();
+      onClose();
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   const handleNote = () => {
     if (!title) {
@@ -57,9 +45,9 @@ const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
     setError("");
 
     if (type === "edit") {
-      editNote();
+      handleEditNote();
     } else {
-      addNote();
+      handleAddNote();
     }
   }
   
