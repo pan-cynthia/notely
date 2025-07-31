@@ -1,4 +1,5 @@
 import Modal from 'react-modal';
+
 import AddEditNote from "./AddEditNote";
 
 const AddEditModal = ({ isOpen, note, type, onClose, getAllNotes, handleShowToast }) => {

@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import Tags from './Tags';
-import { handleError } from '../utils/handleError';
+
 import { addNote, editNote } from '../api/note';
+
+import { handleError } from '../utils/handleError';
+
+import Tags from './Tags';
 
 const AddEditNote = ({ note, type, onClose, getAllNotes, handleShowToast }) => {
   const [title, setTitle] = useState(note?.title || "");

@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Profile from '../components/Profile.jsx';
-import SearchBar from '../components/SearchBar.jsx';
+
 import Logo from '../assets/logo.png';
+
+import Profile from '../components/Profile';
+import SearchBar from '../components/SearchBar';
 
 const NavBar = ({userInfo, searchNotes, clearSearch}) => {
   const [searchQuery, setSearchQuery] = useState("");

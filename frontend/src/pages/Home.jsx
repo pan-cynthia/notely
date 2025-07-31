@@ -1,18 +1,24 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
-import NavBar from '../components/NavBar';
-import NoteCard from '../components/NoteCard';
-import EmptyPage from '../components/EmptyPage';
-import AddEditNoteModal from '../components/AddEditNoteModal';
-import FullNote from '../components/FullNote';
-import Toast from '../components/Toast';
+
+import { getUser } from "../api/auth";
+import { deleteNote, getAllNotes, pinNote, searchNotes } from "../api/note";
+
 import { isTokenValid } from '../utils/authentication';
+import { handleError } from '../utils/handleError';
+
 import AddNoteImg from '../assets/add-note.svg';
 import NoResultsImg from '../assets/no-results.svg';
-import { handleError } from '../utils/handleError';
-import { pinNote, deleteNote, getAllNotes, searchNotes } from "../api/note";
-import { getUser } from "../api/auth";
+
+import AddEditNoteModal from '../components/AddEditNoteModal';
+import EmptyPage from '../components/EmptyPage';
+import FullNote from '../components/FullNote';
+import NavBar from '../components/NavBar';
+import NoteCard from '../components/NoteCard';
+import Toast from '../components/Toast';
+
+
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+
 import { getUserInitials } from '../utils/stringUtils';
 
 const Profile = ({userInfo}) => {

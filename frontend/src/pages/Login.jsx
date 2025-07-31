@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { login } from '../api/auth';
+
+import { isTokenValid } from '../utils/authentication';
 import { validateEmail } from '../utils/stringUtils';
-import { isTokenValid } from '../utils/authentication.js';
+
 import NavBar from '../components/NavBar';
 import Password from '../components/Password';
-import { login } from '../api/auth';
 
 const Login = () => {
   const navigate = useNavigate();
