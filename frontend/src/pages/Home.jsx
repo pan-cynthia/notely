@@ -5,7 +5,7 @@ import NavBar from '../components/NavBar';
 import NoteCard from '../components/NoteCard';
 import EmptyPage from '../components/EmptyPage';
 import AddEditNoteModal from '../components/AddEditNoteModal';
-import NotePreview from '../components/NotePreview';
+import FullNote from '../components/FullNote';
 import Toast from '../components/Toast';
 import axiosInstance from '../api/axiosInstance';
 import { isTokenValid } from '../utils/authentication';
@@ -179,7 +179,7 @@ const Home = () => {
         <MdAdd className="text-white" size={25}/>
       </button>
       <AddEditNoteModal isOpen={openAddEditModal.show} note={openAddEditModal.data} type={openAddEditModal.type} onClose={onClose} getAllNotes={getAllNotes} handleShowToast={handleShowToast}/>
-      {viewNote.show && <NotePreview note={viewNote.data} onClose={closePreview}/>}
+      {viewNote.show && <FullNote note={viewNote.data} onClose={closePreview}/>}
       <Toast isShown={showToast.show} type={showToast.type} message={showToast.message} onClose={handleCloseToast}/>
     </>
   )

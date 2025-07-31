@@ -1,13 +1,13 @@
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useRef } from 'react';
 
-const NotePreview = ({ note, onClose }) => {
+const FullNote = ({ note, onClose }) => {
   const drawerRef = useRef();
 
-  // close side drawer
+  // close side drawer if user clicks outside of it / presses esc key
   useEffect(() => {
     const handleInteraction = (e) => {
-      if (e.type === 'keydown' && e.key === 'Escape') { // esc key pressed
+      if (e.type === 'keydown' && e.key === 'Escape') {
         onClose();
       }
 
@@ -16,8 +16,8 @@ const NotePreview = ({ note, onClose }) => {
       }
     }
 
-    document.addEventListener('keydown', handleInteraction); // listen for keypress
-    document.addEventListener('mousedown', handleInteraction); // listen for mouseclick outside of side drawer
+    document.addEventListener('keydown', handleInteraction);
+    document.addEventListener('mousedown', handleInteraction);
 
     return () => {
       document.removeEventListener('mousedown', handleInteraction);
@@ -48,4 +48,4 @@ const NotePreview = ({ note, onClose }) => {
   )
 }
 
-export default NotePreview;
+export default FullNote;
