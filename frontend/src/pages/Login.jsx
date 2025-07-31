@@ -39,12 +39,12 @@ const Login = () => {
         password: password
       });
       // successfully logged in
-      if (response.data && response.data.accessToken) {
+      if (response.data?.accessToken) {
         localStorage.setItem("accessToken", response.data.accessToken);
         navigate('/'); // navigate to home page
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
         setError("Something went wrong. Please try again.");

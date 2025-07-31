@@ -42,12 +42,12 @@ const SignUp = () => {
         email: email,
         password: password
       })
-      if (response.data && response.data.accessToken) { // successfully created account
+      if (response.data?.accessToken) { // successfully created account
         localStorage.setItem("accessToken", response.data.accessToken);
         navigate('/');
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
         setError("Something went wrong. Please try again.");
