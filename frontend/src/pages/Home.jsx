@@ -5,7 +5,6 @@ import { MdAdd } from "react-icons/md";
 import { getUser } from "../api/auth";
 import { deleteNote, getAllNotes, pinNote, searchNotes } from "../api/note";
 
-import { isTokenValid } from "../utils/authentication";
 import { handleError } from "../utils/handleError";
 
 import AddNoteImg from "../assets/add-note.svg";
@@ -44,7 +43,7 @@ const Home = () => {
 
   const handleShowModal = () => {
     setAddEditModal({ show: true, type: "add", data: null });
-  }
+  };
 
   const handleCloseModal = () => {
     setAddEditModal({ show: false, type: "add", data: null });
@@ -142,15 +141,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
-    // no token or token is expired, need to login again
-    if (!accessToken || !isTokenValid(accessToken)) {
-      localStorage.clear();
-      navigate("/login");
-      return;
-    }
-
     const fetchData = async () => {
       await handleGetUser();
       await handleGetAllNotes();
