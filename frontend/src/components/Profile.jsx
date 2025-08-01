@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
+import { logout } from "../api/auth";
+
 import { getUserInitials } from "../utils/stringUtils";
 
 const Profile = ({ userInfo }) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
+  const handleLogout = async () => {
+    await logout(navigate);
   };
 
   return (

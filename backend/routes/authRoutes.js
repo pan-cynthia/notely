@@ -155,4 +155,14 @@ app.post("/refresh-token", async (req, res) => {
   }
 });
 
+// clear refresh token cookie when user logs out
+app.post("/logout", async (req, res) => {
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Lax",
+  });
+  return res.json({ error: false, message: "Logged out successfully." });
+});
+
 export default app;

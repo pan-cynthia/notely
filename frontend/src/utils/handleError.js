@@ -1,14 +1,13 @@
-export const handleError = (error, navigate = null) => {
+import { logout } from "../api/auth";
+
+export const handleError = async (error, navigate = null) => {
   if (error?.response) {
     console.error("Status: ", error.response.status);
     console.error("Message: ", error.response.data?.message || error.message);
 
     // user not found, log out
     if (error.response.status === 401) {
-      localStorage.clear();
-      if (typeof navigate === "function") {
-        navigate("/login");
-      }
+      await logout(navigate);
     }
   } else {
     console.error("Something went wrong: ", error.message);
