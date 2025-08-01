@@ -3,7 +3,7 @@ import axios from "axios";
 import { isTokenValid } from "../utils/authentication";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "/api",
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
