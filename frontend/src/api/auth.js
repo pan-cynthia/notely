@@ -18,7 +18,7 @@ export const login = ({ email, password }) => {
 export const logout = async (navigate) => {
   await axiosInstance.post("/auth/logout");
   localStorage.removeItem("accessToken");
-   if (typeof navigate === "function") {
+  if (typeof navigate === "function") {
     navigate("/login");
   }
 };
