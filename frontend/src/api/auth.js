@@ -15,11 +15,14 @@ export const login = ({ email, password }) => {
   });
 };
 
-export const logout = async (navigate) => {
+export const logout = async (navigate = null) => {
   await axiosInstance.post("/auth/logout");
-  localStorage.removeItem("accessToken");
+  localStorage.clear();
+
   if (typeof navigate === "function") {
     navigate("/login");
+  } else {
+    window.location.href = "/login";
   }
 };
 

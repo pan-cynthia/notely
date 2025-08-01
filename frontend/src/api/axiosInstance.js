@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { logout } from "./auth";
+
 import { isTokenValid } from "../utils/authentication";
 
 const axiosInstance = axios.create({
@@ -31,16 +33,12 @@ axiosInstance.interceptors.request.use(async (config) => {
         }
       );
 
-      console.log("Refresh token response:", response);
-
       const newToken = response.data.accessToken;
       localStorage.setItem("accessToken", newToken);
       config.headers.Authorization = `Bearer ${newToken}`;
       return config;
     } catch (error) {
-      console.error("Refresh token error:", error.response || error);
-      localStorage.clear();
-      window.location.href = "/login";
+      await logout();
       return Promise.reject(error);
     }
   } else {
