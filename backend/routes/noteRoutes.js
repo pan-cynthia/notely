@@ -23,7 +23,7 @@ app.post("/add-note", authenticateToken, async (req, res) => {
       title,
       content,
       tags: tags || [],
-      userId: req.user._id,
+      userId: req.user.id,
     });
 
     await note.save();
@@ -45,7 +45,7 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 // edit and update specified note
 app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
   const { noteId } = req.params;
-  const userId = req.user._id;
+  const userId = req.user.id;
   const { title, content, tags, isPinned } = req.body;
 
   if (!title && !content && !tags && isPinned === undefined) {
@@ -86,7 +86,7 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
 // get all notes created by user and sort pinned notes to the top
 app.get("/get-all-notes", authenticateToken, async (req, res) => {
   try {
-    const notes = await Note.find({ userId: req.user._id }).sort({
+    const notes = await Note.find({ userId: req.user.id }).sort({
       isPinned: -1,
     });
 
@@ -107,7 +107,7 @@ app.get("/get-all-notes", authenticateToken, async (req, res) => {
 // delete specified note
 app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
   const { noteId } = req.params;
-  const userId = req.user._id;
+  const userId = req.user.id;
 
   try {
     const note = await Note.findOne({ userId: userId, _id: noteId }); // find note first
@@ -131,7 +131,7 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
 // pin or unpin note
 app.put("/pin-unpin-note/:noteId", authenticateToken, async (req, res) => {
   const { noteId } = req.params;
-  const userId = req.user._id;
+  const userId = req.user.id;
   const { isPinned } = req.body;
 
   try {
@@ -157,7 +157,7 @@ app.put("/pin-unpin-note/:noteId", authenticateToken, async (req, res) => {
 
 // search for notes containing query
 app.get("/search-notes", authenticateToken, async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
   const { query } = req.query;
 
   if (!query) {

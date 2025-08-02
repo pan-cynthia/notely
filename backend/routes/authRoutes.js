@@ -40,17 +40,18 @@ app.post("/create-account", async (req, res) => {
 
   await user.save();
 
-  const accessToken = jwt.sign(
-    user.toObject(),
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "30min" }
-  );
+  const payload = {
+    id: user._id,
+    email: user.email,
+  };
 
-  const refreshToken = jwt.sign(
-    user.toObject(),
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" }
-  );
+  const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "30min",
+  });
+
+  const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "7d",
+  });
 
   return res
     .cookie("refreshToken", refreshToken, {
@@ -86,18 +87,19 @@ app.post("/login", async (req, res) => {
     return res.status(400).json({ error: true, message: "User not found." });
   }
 
-  if (isUser.email === email && isUser.password === password) {
-    const userPayload = isUser.toObject ? isUser.toObject() : isUser;
+  const payload = {
+    id: isUser._id,
+    email: isUser.email,
+  };
 
-    const accessToken = jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, {
+  if (isUser.email === email && isUser.password === password) {
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "30min",
     });
 
-    const refreshToken = jwt.sign(
-      userPayload,
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "7d" }
-    );
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+      expiresIn: "7d",
+    });
 
     return res
       .cookie("refreshToken", refreshToken, {
@@ -121,7 +123,7 @@ app.post("/login", async (req, res) => {
 
 // get user by id
 app.get("/get-user", authenticateToken, async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id });
+  const user = await User.findOne({ _id: req.user.id });
   if (!user) {
     return res
       .status(401)
@@ -139,9 +141,13 @@ app.post("/refresh-token", async (req, res) => {
 
   try {
     const user = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-    const newAccessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "30min",
-    });
+    const newAccessToken = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "30min",
+      }
+    );
 
     return res.json({
       error: false,
