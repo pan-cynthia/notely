@@ -8,7 +8,7 @@ import SearchBar from "../components/SearchBar";
 
 const NavBar = ({ userInfo, searchNotes, clearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
@@ -23,6 +23,15 @@ const NavBar = ({ userInfo, searchNotes, clearSearch }) => {
     clearSearch();
   };
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if (value.trim() === "") {
+      handleClearSearch();
+    }
+  };
+
   return (
     <div className="flex items-center px-6 py-2 bg-white drop-shadow">
       <div className="flex flex-1/3 items-center space-x-2">
@@ -34,7 +43,7 @@ const NavBar = ({ userInfo, searchNotes, clearSearch }) => {
           <div className="flex flex-1/3 justify-center">
             <SearchBar
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleInputChange}
               handleSearch={handleSearch}
               handleClearSearch={handleClearSearch}
             />
