@@ -25,8 +25,8 @@ axiosInstance.interceptors.request.use(async (config) => {
   // only refresh access token if expired
   if (!isTokenValid(token)) {
     try {
-      const response = await axios.post(
-        "/api/auth/refresh-token",
+      const response = await axiosInstance.post(
+        "/auth/refresh-token",
         {},
         {
           withCredentials: true,
