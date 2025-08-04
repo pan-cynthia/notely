@@ -1,12 +1,11 @@
 import { jwtDecode } from "jwt-decode";
 
-// check if access token is expired or not
-export const isTokenValid = (accessToken) => {
+// get token expiration time
+export const getTokenExp = (token) => {
   try {
-    const decoded = jwtDecode(accessToken);
-    const currTime = Date.now() / 1000;
-    return decoded.exp > currTime;
+    const decoded = jwtDecode(token);
+    return decoded.exp * 1000;
   } catch {
-    return false;
+    return null;
   }
 };
