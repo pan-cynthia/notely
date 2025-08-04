@@ -3,6 +3,7 @@ import axios from "axios";
 import { logout } from "./auth";
 
 import { isTokenValid } from "../utils/authentication";
+import { handleError } from "../utils/handleError";
 
 const axiosInstance = axios.create({
   baseURL: "/api",
@@ -25,8 +26,8 @@ axiosInstance.interceptors.request.use(async (config) => {
   // only refresh access token if expired
   if (!isTokenValid(token)) {
     try {
-      const response = await axiosInstance.post(
-        "/auth/refresh-token",
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/refresh-token",
         {},
         {
           withCredentials: true,
@@ -38,7 +39,11 @@ axiosInstance.interceptors.request.use(async (config) => {
       config.headers.Authorization = `Bearer ${newToken}`;
       return config;
     } catch (error) {
-      await logout();
+      try {
+        await logout();
+      } catch (err) {
+        handleError(err);
+      }
       return Promise.reject(error);
     }
   } else {
