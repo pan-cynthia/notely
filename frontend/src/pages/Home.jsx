@@ -7,6 +7,7 @@ import { useToast } from "../hooks/useToast";
 import { getUser } from "../api/auth";
 import { deleteNote, getAllNotes, pinNote, searchNotes } from "../api/note";
 
+import { autoLogout } from "../utils/authentication";
 import { handleError } from "../utils/handleError";
 
 import AddNoteImg from "../assets/add-note.svg";
@@ -128,8 +129,12 @@ const Home = () => {
       await handleGetAllNotes();
     };
 
+    const accessTokenExp = Number(localStorage.getItem("accessTokenExp"));
+    const refreshTokenExp = Number(localStorage.getItem("refreshTokenExp"));
+    autoLogout(handleShowToast, accessTokenExp, refreshTokenExp);
+
     fetchData();
-  }, [navigate, handleGetUser, handleGetAllNotes]);
+  }, [navigate, handleGetUser, handleGetAllNotes, handleShowToast]);
 
   return (
     <>

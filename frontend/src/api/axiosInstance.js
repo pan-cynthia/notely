@@ -2,7 +2,9 @@ import axios from "axios";
 
 import { logout } from "./auth";
 
-import { getTokenExp } from "../utils/authentication";
+import { autoLogout, getTokenExp } from "../utils/authentication";
+import { showGlobalToast } from "../utils/toastNotifier";
+
 import { handleError } from "../utils/handleError";
 
 const axiosInstance = axios.create({
@@ -24,7 +26,7 @@ axiosInstance.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("accessToken");
 
   // only refresh access token if expired
-  if ((getTokenExp(token) < Date.now())) {
+  if (getTokenExp(token) < Date.now()) {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/refresh-token",
@@ -35,7 +37,13 @@ axiosInstance.interceptors.request.use(async (config) => {
       );
 
       const newToken = response.data.accessToken;
+      const newTokenExp = getTokenExp(newToken);
+      const refreshTokenExp = localStorage.getItem("refreshTokenExp");
+
       localStorage.setItem("accessToken", newToken);
+      localStorage.setItem("accessTokenExp", newTokenExp);
+
+      autoLogout(showGlobalToast, newTokenExp, refreshTokenExp);
       config.headers.Authorization = `Bearer ${newToken}`;
       return config;
     } catch (error) {
