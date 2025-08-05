@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { createAccount } from "../api/auth";
 
-import { getTokenExp } from "../utils/authentication";
 import { validateEmail, validatePassword } from "../utils/stringUtils";
 
 import NavBar from "../components/NavBar";
@@ -48,7 +47,6 @@ const SignUp = () => {
 
       if (accessToken && refreshTokenExp) {
         localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("accessTokenExp", getTokenExp(accessToken));
         localStorage.setItem("refreshTokenExp", refreshTokenExp);
         navigate("/");
       }

@@ -37,13 +37,10 @@ axiosInstance.interceptors.request.use(async (config) => {
       );
 
       const newToken = response.data.accessToken;
-      const newTokenExp = getTokenExp(newToken);
+      localStorage.setItem("accessToken", newToken);
       const refreshTokenExp = localStorage.getItem("refreshTokenExp");
 
-      localStorage.setItem("accessToken", newToken);
-      localStorage.setItem("accessTokenExp", newTokenExp);
-
-      autoLogout(showGlobalToast, newTokenExp, refreshTokenExp);
+      autoLogout(showGlobalToast, refreshTokenExp);
       config.headers.Authorization = `Bearer ${newToken}`;
       return config;
     } catch (error) {

@@ -129,9 +129,8 @@ const Home = () => {
       await handleGetAllNotes();
     };
 
-    const accessTokenExp = Number(localStorage.getItem("accessTokenExp"));
     const refreshTokenExp = Number(localStorage.getItem("refreshTokenExp"));
-    autoLogout(handleShowToast, accessTokenExp, refreshTokenExp);
+    autoLogout(handleShowToast, refreshTokenExp);
 
     fetchData();
   }, [navigate, handleGetUser, handleGetAllNotes, handleShowToast]);

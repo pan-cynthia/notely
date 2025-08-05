@@ -44,7 +44,6 @@ const Login = () => {
       if (accessToken && refreshTokenExp) {
         // successful login
         localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("accessTokenExp", getTokenExp(accessToken));
         localStorage.setItem("refreshTokenExp", refreshTokenExp);
         navigate("/");
       }

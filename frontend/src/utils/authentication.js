@@ -15,24 +15,19 @@ export const getTokenExp = (token) => {
 let logoutTimer;
 
 // logout user if access token or refresh token is about to expire
-export const autoLogout = async (
-  handleShowToast,
-  accessTokenExp,
-  refreshTokenExp
-) => {
+export const autoLogout = async (handleShowToast, refreshTokenExp) => {
   if (logoutTimer) clearTimeout(logoutTimer);
 
-  const bufferTime = 10 * 1000; // 10 seconds before actual expiration
+  const bufferTime = 5 * 1000; // 5 seconds before actual expiration
   const currTime = Date.now();
-  const logoutTime =
-    Math.min(accessTokenExp, refreshTokenExp) - currTime - bufferTime;
+  const logoutTime = refreshTokenExp - currTime - bufferTime;
 
   if (logoutTime > 0) {
     logoutTimer = setTimeout(() => {
       handleShowToast("logout", "You're about to be logged out.");
       setTimeout(async () => {
         await logout();
-      }, 5000);
+      }, bufferTime);
     }, logoutTime);
   } else {
     await logout();
