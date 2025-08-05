@@ -2,14 +2,7 @@ import Modal from "react-modal";
 
 import AddEditNote from "./AddEditNote";
 
-const AddEditModal = ({
-  isOpen,
-  note,
-  type,
-  onClose,
-  getAllNotes,
-  handleShowToast,
-}) => {
+const AddEditModal = ({ isOpen, note, type, onClose, getAllNotes }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -27,7 +20,6 @@ const AddEditModal = ({
         type={type}
         onClose={onClose}
         getAllNotes={getAllNotes}
-        handleShowToast={handleShowToast}
       />
     </Modal>
   );

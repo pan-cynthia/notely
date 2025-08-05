@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdAdd } from "react-icons/md";
 
+import { useToast } from "../hooks/useToast";
+
 import { getUser } from "../api/auth";
 import { deleteNote, getAllNotes, pinNote, searchNotes } from "../api/note";
 
@@ -15,7 +17,6 @@ import EmptyPage from "../components/EmptyPage";
 import FullNote from "../components/FullNote";
 import NavBar from "../components/NavBar";
 import NoteCard from "../components/NoteCard";
-import Toast from "../components/Toast";
 
 const Home = () => {
   const [openAddEditModal, setAddEditModal] = useState({
@@ -29,17 +30,13 @@ const Home = () => {
     data: null,
   });
 
-  const [showToast, setShowToast] = useState({
-    show: false,
-    type: "add",
-    message: "",
-  });
-
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
 
   const navigate = useNavigate();
+
+  const { handleShowToast } = useToast();
 
   const handleShowModal = () => {
     setAddEditModal({ show: true, type: "add", data: null });
@@ -59,21 +56,6 @@ const Home = () => {
 
   const handleCloseViewNote = () => {
     setViewNote({ show: false, data: null });
-  };
-
-  const handleShowToast = (type, message) => {
-    setShowToast({
-      show: true,
-      type: type,
-      message: message,
-    });
-  };
-
-  const handleCloseToast = () => {
-    setShowToast({
-      show: false,
-      message: "",
-    });
   };
 
   // update pinned state of note
@@ -205,17 +187,10 @@ const Home = () => {
         type={openAddEditModal.type}
         onClose={handleCloseModal}
         getAllNotes={handleGetAllNotes}
-        handleShowToast={handleShowToast}
       />
       {viewNote.show && (
         <FullNote note={viewNote.data} onClose={handleCloseViewNote} />
       )}
-      <Toast
-        isShown={showToast.show}
-        type={showToast.type}
-        message={showToast.message}
-        onClose={handleCloseToast}
-      />
     </>
   );
 };
