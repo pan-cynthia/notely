@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "../api/auth";
 
-import { getTokenExp } from "../utils/authentication";
+import { isTokenValid } from "../utils/authentication";
 import { validateEmail } from "../utils/stringUtils";
 
 import NavBar from "../components/NavBar";
@@ -18,7 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    if (accessToken && getTokenExp(accessToken) > Date.now()) {
+    if (accessToken && isTokenValid(accessToken)) {
       navigate("/");
     }
   }, [navigate]);

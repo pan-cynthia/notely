@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { logout } from "./auth";
 
-import { autoLogout, getTokenExp } from "../utils/authentication";
+import { autoLogout, isTokenValid } from "../utils/authentication";
 import { showGlobalToast } from "../utils/toastNotifier";
 
 import { handleError } from "../utils/handleError";
@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("accessToken");
 
   // only refresh access token if expired
-  if (getTokenExp(token) < Date.now()) {
+  if (!isTokenValid(token)) {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/refresh-token",

@@ -3,18 +3,19 @@ import { jwtDecode } from "jwt-decode";
 import { logout } from "../api/auth";
 
 // get token expiration time
-export const getTokenExp = (token) => {
+export const isTokenValid = (token) => {
   try {
     const decoded = jwtDecode(token);
-    return decoded.exp * 1000;
+    const currTime = Date.now() / 1000;
+    return decoded.exp > currTime;
   } catch {
-    return null;
+    return false;
   }
 };
 
 let logoutTimer;
 
-// logout user if access token or refresh token is about to expire
+// logout user if refresh token is about to expire
 export const autoLogout = async (handleShowToast, refreshTokenExp) => {
   if (logoutTimer) clearTimeout(logoutTimer);
 
