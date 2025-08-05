@@ -53,6 +53,8 @@ app.post("/create-account", async (req, res) => {
     expiresIn: "7d",
   });
 
+  const refreshTokenExp = jwt.decode(refreshToken).exp * 1000;
+
   return res
     .cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -64,6 +66,7 @@ app.post("/create-account", async (req, res) => {
       error: false,
       user,
       accessToken,
+      refreshTokenExp: refreshTokenExp,
       message: "Registration successful.",
     });
 });
@@ -101,6 +104,8 @@ app.post("/login", async (req, res) => {
       expiresIn: "7d",
     });
 
+    const refreshTokenExp = jwt.decode(refreshToken).exp * 1000;
+
     return res
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
@@ -112,6 +117,7 @@ app.post("/login", async (req, res) => {
         error: false,
         email,
         accessToken,
+        refreshTokenExp: refreshTokenExp,
         message: "Login successful.",
       });
   } else {

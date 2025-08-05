@@ -38,9 +38,14 @@ const Login = () => {
 
     try {
       const response = await login({ email, password });
-      if (response.data?.accessToken) {
+      const accessToken = response.data.accessToken;
+      const refreshTokenExp = response.data.refreshTokenExp;
+
+      if (accessToken && refreshTokenExp) {
         // successful login
         localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("accessTokenExp", getTokenExp(accessToken));
+        localStorage.setItem("refreshTokenExp", refreshTokenExp);
         navigate("/");
       }
     } catch (error) {

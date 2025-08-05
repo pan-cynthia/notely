@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { createAccount } from "../api/auth";
 
+import { getTokenExp } from "../utils/authentication";
 import { validateEmail, validatePassword } from "../utils/stringUtils";
 
 import NavBar from "../components/NavBar";
@@ -42,8 +43,13 @@ const SignUp = () => {
     // create new account with user entered form data
     try {
       const response = await createAccount({ name, email, password });
-      if (response.data?.accessToken) {
+      const accessToken = response.data.accessToken;
+      const refreshTokenExp = response.data.refreshTokenExp;
+
+      if (accessToken && refreshTokenExp) {
         localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("accessTokenExp", getTokenExp(accessToken));
+        localStorage.setItem("refreshTokenExp", refreshTokenExp);
         navigate("/");
       }
     } catch (error) {
