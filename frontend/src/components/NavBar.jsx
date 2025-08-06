@@ -34,7 +34,10 @@ const NavBar = ({ userInfo, searchNotes, clearSearch }) => {
 
   return (
     <div className="flex items-center px-6 py-2 bg-white drop-shadow">
-      <div className="flex flex-1/3 items-center space-x-2">
+      <div
+        className="flex flex-1/3 items-center space-x-2 cursor-pointer"
+        onClick={handleClearSearch}
+      >
         <img src={Logo} width={35} />
         <h2 className="text-xl font-medium text-black py-2">Notely</h2>
       </div>
