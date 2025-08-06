@@ -42,9 +42,9 @@ const Toast = ({ isShown, type, message, onClose }) => {
         className={`min-w-52 bg-white rounded-md shadow-2xl before:w-[5px] before:h-full before:absolute before:left-0 before:top-0 before:rounded-l-lg ${
           type === "delete"
             ? "before:bg-red-500"
-            : type === "add"
-            ? "before:bg-green-500"
-            : "before:bg-blue-500"
+            : type === "logout"
+            ? "before:bg-blue-500"
+            : "before:bg-green-500"
         }`}
       >
         <div className="flex items-center gap-3 px-4 py-2">
@@ -52,19 +52,19 @@ const Toast = ({ isShown, type, message, onClose }) => {
             className={`w-10 h-10 flex items-center justify-center rounded-full ${
               type === "delete"
                 ? "bg-red-50"
-                : type === "add"
-                ? "bg-green-50"
-                : "bg-blue-50"
+                : type === "logout"
+                ? "bg-blue-50"
+                : "bg-green-50"
             }`}
           >
             {" "}
             {/* circle background for check*/}
             {type === "delete" ? (
               <MdDeleteOutline className="text-xl text-red-500" />
-            ) : type === "add" ? (
-              <LuCheck className="text-xl text-green-500" />
-            ) : (
+            ) : type === "logout" ? (
               <LuLogOut className="text-xl text-blue-500" />
+            ) : (
+              <LuCheck className="text-xl text-green-500" />
             )}
           </div>
           <p className="text-sm text-slate-800">{message}</p>
