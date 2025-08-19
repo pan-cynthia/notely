@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import "./styles/index.css";
 
 import { ToastProvider } from "./providers/ToastContextProvider";
+import { AuthProvider } from "./providers/AuthContextProvider";
 
 import App from "./App";
 
@@ -15,7 +16,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <ToastProvider>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ToastProvider>
     </BrowserRouter>
   </StrictMode>

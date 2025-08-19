@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { MdAdd } from "react-icons/md";
 
+import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 
-import { getUser } from "../api/auth";
 import { deleteNote, getAllNotes, pinNote, searchNotes } from "../api/note";
 
-import { autoLogout } from "../utils/authentication";
 import { handleError } from "../utils/handleError";
 
 import AddNoteImg from "../assets/add-note.svg";
@@ -31,12 +29,10 @@ const Home = () => {
     data: null,
   });
 
-  const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
 
-  const navigate = useNavigate();
-
+  const { userInfo } = useAuth();
   const { handleShowToast } = useToast();
 
   const handleShowModal = () => {
@@ -80,18 +76,6 @@ const Home = () => {
     }
   };
 
-  // get logged in user
-  const handleGetUser = useCallback(async () => {
-    try {
-      const response = await getUser();
-      if (response.data && response.data.user) {
-        setUserInfo(response.data.user);
-      }
-    } catch (error) {
-      handleError(error, navigate);
-    }
-  }, [navigate]);
-
   // get all of user's notes
   const handleGetAllNotes = useCallback(async () => {
     try {
@@ -125,15 +109,11 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await handleGetUser();
       await handleGetAllNotes();
     };
 
-    const refreshTokenExp = Number(localStorage.getItem("refreshTokenExp"));
-    autoLogout(handleShowToast, refreshTokenExp);
-
     fetchData();
-  }, [navigate, handleGetUser, handleGetAllNotes, handleShowToast]);
+  }, [handleGetAllNotes]);
 
   return (
     <>
