@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { getUser } from "../api/auth";
 
@@ -7,11 +6,9 @@ import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 import { autoLogout } from "../utils/authentication";
 
-const Auth = () => {
+const Auth = ({ children }) => {
   const [isChecking, setIsChecking] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const navigate = useNavigate();
   const { setUserInfo } = useAuth();
   const { handleShowToast } = useToast();
 
@@ -32,7 +29,7 @@ const Auth = () => {
           setIsAuthenticated(false);
         }
       } catch {
-        setIsAuthenticated(false);
+        // setIsAuthenticated(false);
       } finally {
         setIsChecking(false);
       }
@@ -45,7 +42,7 @@ const Auth = () => {
     return <div style={{ color: "red" }}>Checking authentication...</div>;
   }
 
-  return isAuthenticated ? navigate("/home") : navigate("/login");
+  return isAuthenticated ? children : null;
 };
 
 export default Auth;

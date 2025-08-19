@@ -14,6 +14,7 @@ export const ToastProvider = ({ children }) => {
   });
 
   const handleShowToast = useCallback((type, message) => {
+    if (!message || message.trim() === "") return;
     setShowToast({
       show: true,
       type: type,
@@ -22,11 +23,11 @@ export const ToastProvider = ({ children }) => {
   }, []);
 
   const handleCloseToast = useCallback(() => {
-    setShowToast((prev) => ({
-      ...prev,
+    setShowToast({
       show: false,
+      type: "add",
       message: "",
-    }));
+    });
   }, []);
 
   useEffect(() => {
