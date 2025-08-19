@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -8,10 +8,21 @@ import AuthGate from "./components/AuthGate";
 const App = () => {
   return (
     <Routes>
-      <Route index element={<AuthGate />} />
-      <Route path="/home" element={<Home />} />
+      {/* public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+
+      {/* protected routes */}
+      <Route
+        path="/home"
+        element={
+          <AuthGate>
+            <Home />
+          </AuthGate>
+        }
+      />
+
+      <Route path="/" element={<Navigate to="/home" replace />} />
     </Routes>
   );
 };
