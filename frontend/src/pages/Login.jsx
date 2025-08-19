@@ -19,7 +19,7 @@ const Login = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken && isTokenValid(accessToken)) {
-      navigate("/");
+      navigate("/home");
     }
   }, [navigate]);
 
@@ -45,7 +45,7 @@ const Login = () => {
         // successful login
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshTokenExp", refreshTokenExp);
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       if (error.response?.data?.message) {

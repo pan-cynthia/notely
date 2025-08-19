@@ -10,7 +10,7 @@ const NavBar = ({ userInfo, searchNotes, clearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const location = useLocation();
-  const isHomePage = location.pathname === "/";
+  const isHomePage = location.pathname === "/home";
 
   const handleSearch = () => {
     if (searchQuery) {

@@ -48,7 +48,7 @@ const SignUp = () => {
       if (accessToken && refreshTokenExp) {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshTokenExp", refreshTokenExp);
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       if (error.response?.data?.message) {
