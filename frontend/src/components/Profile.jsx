@@ -4,11 +4,15 @@ import { logout } from "../api/auth";
 
 import { getUserInitials } from "../utils/stringUtils";
 
-const Profile = ({ userInfo }) => {
+import { useAuth } from "../hooks/useAuth";
+
+const Profile = () => {
   const navigate = useNavigate();
 
+  const { userInfo, setUserInfo } = useAuth();
+
   const handleLogout = async () => {
-    await logout(navigate);
+    await logout(navigate, setUserInfo);
   };
 
   return (

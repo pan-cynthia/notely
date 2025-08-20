@@ -19,7 +19,7 @@ export const login = ({ email, password }) => {
   });
 };
 
-export const logout = async (navigate = null) => {
+export const logout = async (navigate = null, setUserInfo) => {
   try {
     await axios.post(
       "http://localhost:3000/api/auth/logout",
@@ -30,6 +30,7 @@ export const logout = async (navigate = null) => {
     handleError(error);
   }
 
+  if (setUserInfo) setUserInfo(null);
   localStorage.clear();
 
   if (typeof navigate === "function") {

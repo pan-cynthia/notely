@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 
-import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 
 import { deleteNote, getAllNotes, pinNote, searchNotes } from "../api/note";
@@ -32,7 +31,6 @@ const Home = () => {
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
 
-  const { userInfo } = useAuth();
   const { handleShowToast } = useToast();
 
   const handleShowModal = () => {
@@ -118,7 +116,6 @@ const Home = () => {
   return (
     <>
       <NavBar
-        userInfo={userInfo}
         searchNotes={handleSearchNotes}
         clearSearch={clearSearch}
       />

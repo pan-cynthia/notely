@@ -6,7 +6,7 @@ import Logo from "../assets/logo.png";
 import Profile from "../components/Profile";
 import SearchBar from "../components/SearchBar";
 
-const NavBar = ({ userInfo, searchNotes, clearSearch }) => {
+const NavBar = ({ searchNotes, clearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const location = useLocation();
@@ -52,7 +52,7 @@ const NavBar = ({ userInfo, searchNotes, clearSearch }) => {
             />
           </div>
           <div className="flex flex-1/3 justify-end">
-            <Profile userInfo={userInfo} />
+            <Profile />
           </div>
         </>
       )}
