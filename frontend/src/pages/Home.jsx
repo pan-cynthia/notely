@@ -30,6 +30,7 @@ const Home = () => {
 
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
+  const [isLoadingNotes, setIsLoadingNotes] = useState(true);
 
   const { handleShowToast } = useToast();
 
@@ -76,6 +77,7 @@ const Home = () => {
 
   // get all of user's notes
   const handleGetAllNotes = useCallback(async () => {
+    setIsLoadingNotes(true);
     try {
       const response = await getAllNotes();
       if (response.data && response.data.notes) {
@@ -83,6 +85,8 @@ const Home = () => {
       }
     } catch (error) {
       handleError(error);
+    } finally {
+      setIsLoadingNotes(false);
     }
   }, []);
 
@@ -115,12 +119,9 @@ const Home = () => {
 
   return (
     <>
-      <NavBar
-        searchNotes={handleSearchNotes}
-        clearSearch={clearSearch}
-      />
+      <NavBar searchNotes={handleSearchNotes} clearSearch={clearSearch} />
       <div className="container mx-auto">
-        {allNotes.length > 0 ? (
+        {isLoadingNotes ? null : allNotes.length > 0 ? (
           <div className="grid grid-cols-3 gap-4 mt-10">
             {allNotes.map((note) => (
               <NoteCard
