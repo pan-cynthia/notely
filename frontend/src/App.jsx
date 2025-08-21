@@ -5,12 +5,22 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import AuthGate from "./components/AuthGate";
 
+import { useAuth } from "./hooks/useAuth";
+
 const App = () => {
+  const { userInfo, isChecking } = useAuth();
+
   return (
     <Routes>
       {/* public routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route
+        path="/login"
+        element={userInfo ? <Navigate to="/home" replace /> : <Login />}
+      />
+      <Route
+        path="/signup"
+        element={userInfo ? <Navigate to="/home" replace /> : <SignUp />}
+      />
 
       {/* protected routes */}
       <Route
@@ -22,7 +32,20 @@ const App = () => {
         }
       />
 
-      <Route path="/" element={<Navigate to="/home" replace />} />
+      {/* default route */}
+      {/* if user is already logged in (userInfo not null) redirect to home page, otherwise redirect to login page*/}
+      <Route
+        path="/"
+        element={
+          isChecking ? (
+            <div style={{ color: "red" }}>Checking authentication...</div>
+          ) : userInfo ? (
+            <Navigate to="/home" replace />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
     </Routes>
   );
 };
