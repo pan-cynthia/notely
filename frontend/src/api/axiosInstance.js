@@ -13,6 +13,36 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+const refreshToken = async () => {
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/api/auth/refresh-token",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    const newToken = response.data.accessToken;
+    localStorage.setItem("accessToken", newToken);
+
+    const refreshTokenExp = Number(localStorage.getItem("refreshTokenExp"));
+    autoLogout(showGlobalToast, refreshTokenExp);
+
+    return newToken;
+  } catch (error) {
+    // refresh failed, only logout if there is a valid session
+    if (localStorage.getItem("refreshTokenExp")) {
+      try {
+        await logout();
+      } catch (err) {
+        handleError(err);
+      }
+    }
+    return Promise.reject(error);
+  }
+};
+
 axiosInstance.interceptors.request.use(async (config) => {
   // don't refresh token on these requests to avoid infinite loop
   if (
@@ -23,38 +53,19 @@ axiosInstance.interceptors.request.use(async (config) => {
     return config;
   }
 
-  const token = localStorage.getItem("accessToken");
+  let token = localStorage.getItem("accessToken");
 
   // only refresh access token if expired
   if (!isTokenValid(token)) {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/refresh-token",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-
-      const newToken = response.data.accessToken;
-      localStorage.setItem("accessToken", newToken);
-      const refreshTokenExp = localStorage.getItem("refreshTokenExp");
-
-      autoLogout(showGlobalToast, refreshTokenExp);
-      config.headers.Authorization = `Bearer ${newToken}`;
+    if (localStorage.getItem("refreshToken")) {
+      token = await refreshToken();
+    } else {
       return config;
-    } catch (error) {
-      try {
-        await logout();
-      } catch (err) {
-        handleError(err);
-      }
-      return Promise.reject(error);
     }
-  } else {
-    config.headers.Authorization = `Bearer ${token}`;
-    return config;
   }
+
+  config.headers.Authorization = `Bearer ${token}`;
+  return config;
 });
 
 export default axiosInstance;
