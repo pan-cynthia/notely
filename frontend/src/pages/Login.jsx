@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { login } from "../api/auth";
+import { getUser, login } from "../api/auth";
 
 import { isTokenValid } from "../utils/authentication";
 import { validateEmail } from "../utils/stringUtils";
@@ -9,15 +9,21 @@ import { validateEmail } from "../utils/stringUtils";
 import NavBar from "../components/NavBar";
 import Password from "../components/Password";
 
+import { useAuth } from "../hooks/useAuth";
+
+import { handleError } from "../utils/handleError";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  const { setUserInfo } = useAuth();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
+    // user already logged in
     if (accessToken && isTokenValid(accessToken)) {
       navigate("/home");
     }
@@ -45,6 +51,12 @@ const Login = () => {
         // successful login
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshTokenExp", refreshTokenExp);
+        try {
+          const res = await getUser();
+          setUserInfo(res.data.user);
+        } catch (error) {
+          handleError(error);
+        }
         navigate("/home");
       }
     } catch (error) {
