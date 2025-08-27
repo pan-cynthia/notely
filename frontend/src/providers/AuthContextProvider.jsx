@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = useCallback(async () => {
     setIsChecking(true);
-    // set userInfo for protected routes
     try {
       const response = await getUser();
       if (response.data.user) {
@@ -24,16 +23,13 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // don't call checkAuth on public routes
-    if (location.pathname !== "/login" && location.pathname !== "/signup") {
-      checkAuth();
-    } else {
-      setIsChecking(false);
-    }
+    checkAuth();
   }, [checkAuth]);
 
   return (
-    <AuthContext.Provider value={{ checkAuth, isChecking, userInfo, setUserInfo }}>
+    <AuthContext.Provider
+      value={{ checkAuth, isChecking, userInfo, setUserInfo }}
+    >
       {children}
     </AuthContext.Provider>
   );

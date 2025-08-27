@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { getUser, login } from "../api/auth";
 
-import { isTokenValid } from "../utils/authentication";
 import { validateEmail } from "../utils/stringUtils";
 
 import NavBar from "../components/NavBar";
@@ -20,14 +19,6 @@ const Login = () => {
 
   const navigate = useNavigate();
   const { setUserInfo } = useAuth();
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    // user already logged in
-    if (accessToken && isTokenValid(accessToken)) {
-      navigate("/home");
-    }
-  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

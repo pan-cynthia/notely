@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { createAccount } from "../api/auth";
 
-import { isTokenValid } from "../utils/authentication";
 import { validateEmail, validatePassword } from "../utils/stringUtils";
 
 import NavBar from "../components/NavBar";
@@ -16,13 +15,6 @@ const SignUp = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken && isTokenValid(accessToken)) {
-      navigate("/home");
-    }
-  }, [navigate]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();

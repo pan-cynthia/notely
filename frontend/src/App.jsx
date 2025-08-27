@@ -15,11 +15,23 @@ const App = () => {
       {/* public routes */}
       <Route
         path="/login"
-        element={userInfo ? <Navigate to="/home" replace /> : <Login />}
+        element={
+          isChecking ? null : userInfo ? (
+            <Navigate to="/home" replace />
+          ) : (
+            <Login />
+          )
+        }
       />
       <Route
         path="/signup"
-        element={userInfo ? <Navigate to="/home" replace /> : <SignUp />}
+        element={
+          isChecking ? null : userInfo ? (
+            <Navigate to="/home" replace />
+          ) : (
+            <SignUp />
+          )
+        }
       />
 
       {/* protected routes */}
@@ -37,9 +49,7 @@ const App = () => {
       <Route
         path="/"
         element={
-          isChecking ? (
-            <div style={{ color: "red" }}>Checking authentication...</div>
-          ) : userInfo ? (
+          isChecking ? null : userInfo ? (
             <Navigate to="/home" replace />
           ) : (
             <Navigate to="/login" replace />
