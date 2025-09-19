@@ -4,6 +4,8 @@ import axiosInstance from "./axiosInstance";
 
 import { handleError } from "../utils/handleError";
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export const createAccount = ({ name, email, password }) => {
   return axiosInstance.post("/auth/create-account", {
     name,
@@ -22,7 +24,7 @@ export const login = ({ email, password }) => {
 export const logout = async (navigate = null, setUserInfo) => {
   try {
     await axios.post(
-      "http://localhost:3000/api/auth/logout",
+      `${baseURL}/api/auth/logout`,
       {},
       { withCredentials: true }
     );

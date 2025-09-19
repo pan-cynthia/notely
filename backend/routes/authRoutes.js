@@ -7,6 +7,8 @@ import User from "../models/user.js";
 
 const app = express.Router();
 
+const isProduction = process.env.NODE_ENV === "production";
+
 // create a new account
 app.post("/create-account", async (req, res) => {
   const { name, email, password } = req.body;
@@ -58,8 +60,8 @@ app.post("/create-account", async (req, res) => {
   return res
     .cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
     .json({
@@ -109,8 +111,8 @@ app.post("/login", async (req, res) => {
     return res
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        secure: isProduction,
+        sameSite: isProduction ? "None" : "Lax",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       })
       .json({

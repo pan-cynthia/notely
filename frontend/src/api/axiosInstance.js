@@ -7,8 +7,10 @@ import { showGlobalToast } from "../utils/toastNotifier";
 
 import { handleError } from "../utils/handleError";
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
 const axiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL: `${baseURL}/api`,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
@@ -16,7 +18,7 @@ const axiosInstance = axios.create({
 const refreshToken = async () => {
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/auth/refresh-token",
+      `${baseURL}/api/auth/refresh-token`,
       {},
       {
         withCredentials: true,

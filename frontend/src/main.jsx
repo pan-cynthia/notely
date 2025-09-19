@@ -14,7 +14,7 @@ Modal.setAppElement("#root");
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/notely">
       <ToastProvider>
         <AuthProvider>
           <App />

@@ -9,6 +9,12 @@ import noteRoutes from "./routes/noteRoutes.js";
 
 dotenv.config();
 
+if (process.env.NODE_ENV === "production") {
+  dotenv.config({ path: ".env.production" });
+} else {
+  dotenv.config({ path: ".env.development" });
+}
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
@@ -21,13 +27,17 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
 
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", noteRoutes);
+
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
