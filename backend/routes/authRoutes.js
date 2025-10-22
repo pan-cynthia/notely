@@ -173,8 +173,8 @@ app.post("/refresh-token", async (req, res) => {
 app.post("/logout", async (req, res) => {
   res.clearCookie("refreshToken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Lax",
+    secure: isProduction,
+    sameSite: isProduction ? "None" : "Lax",
   });
   return res.json({ error: false, message: "Logged out successfully." });
 });
