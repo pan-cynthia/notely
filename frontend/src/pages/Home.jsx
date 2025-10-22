@@ -30,7 +30,7 @@ const Home = () => {
 
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
-  const [isLoadingNotes, setIsLoadingNotes] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   const { handleShowToast } = useToast();
 
@@ -77,7 +77,6 @@ const Home = () => {
 
   // get all of user's notes
   const handleGetAllNotes = useCallback(async () => {
-    setIsLoadingNotes(true);
     try {
       const response = await getAllNotes();
       if (response.data && response.data.notes) {
@@ -86,7 +85,7 @@ const Home = () => {
     } catch (error) {
       handleError(error);
     } finally {
-      setIsLoadingNotes(false);
+      setIsInitialLoading(false);
     }
   }, []);
 
@@ -120,9 +119,9 @@ const Home = () => {
   return (
     <>
       <NavBar searchNotes={handleSearchNotes} clearSearch={clearSearch} />
-      <div className="container mx-auto">
-        {isLoadingNotes ? null : allNotes.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4 mt-10">
+      <div className='container mx-auto'>
+        {isInitialLoading ? null : allNotes.length > 0 ? (
+          <div className='grid grid-cols-3 gap-4 mt-10'>
             {allNotes.map((note) => (
               <NoteCard
                 key={note._id}
@@ -158,10 +157,10 @@ const Home = () => {
         )}
       </div>
       <button
-        className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10"
+        className='w-12 h-12 flex items-center justify-center rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10'
         onClick={() => handleShowModal()}
       >
-        <MdAdd className="text-white" size={25} />
+        <MdAdd className='text-white' size={25} />
       </button>
       <AddEditNoteModal
         isOpen={openAddEditModal.show}
